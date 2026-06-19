@@ -1,0 +1,6 @@
+@TTERP.WebApi_HostAddress = http://localhost:5236
+
+GET {{TTERP.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
