@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TTERP.Domain.Entities.Common
 {
-    public abstract class BaseAuditEntity
+    public abstract class BaseAuditEntity : IAuditableEntity
     {
         public DateTime CreatedDate { get; private set; }
         public DateTime? UpdatedDate { get; private set; }

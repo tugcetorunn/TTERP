@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TTERP.Domain.Entities.Common;
 
 namespace TTERP.Domain.Entities
 {
-    public class Role : IdentityRole<int>
+    public class Role : IdentityRole<int>, IAuditableEntity
     {
         public string NameForUI { get; set; }
         public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;

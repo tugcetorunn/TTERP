@@ -7,7 +7,7 @@ using TTERP.Persistence.Contexts;
 
 namespace TTERP.Persistence.Repositories.Abstract
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity<int>
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAuditableEntity
     {
         protected readonly AppDbContext context;
         protected readonly DbSet<TEntity> table;
@@ -23,16 +23,15 @@ namespace TTERP.Persistence.Repositories.Abstract
 
         public async Task AddAsync(TEntity entity)
         {
-            entity.SetCreated(entity.CreatedBy);
+            entity.SetCreated(entity.CreatedBy ?? "System");
             await context.AddAsync(entity);
-            await context.SaveChangesAsync();
+            // UOW kullanıldığı için SaveChangesAsync çağrısı burada yapılmaz. UOW, tüm değişiklikleri tek bir işlem olarak kaydetmek için kullanılır. Transaction hatasız tamamlanması durumunda SaveChangesAsync çağrısı UOW tarafından yapılır.
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public void UpdateAsync(TEntity entity)
         {
-            entity.SetUpdated(entity.UpdatedBy!);
+            entity.SetUpdated(entity.UpdatedBy ?? "System");
             context.Update(entity);
-            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetListAsync()
@@ -44,14 +43,11 @@ namespace TTERP.Persistence.Repositories.Abstract
         {
             var entity = await FindAsync(id);
 
-            entity.SoftDelete(entity.DeletedBy!);
-            context.Update(entity);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await context.SaveChangesAsync();
+            if (entity != null)
+            {
+                entity.SoftDelete(entity.DeletedBy ?? "System");
+                context.Update(entity);
+            }
         }
 
         public async Task<IEnumerable<TResult>> GetListWithFilterAsync<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)

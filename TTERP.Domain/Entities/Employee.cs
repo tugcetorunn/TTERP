@@ -9,7 +9,7 @@ using TTERP.Domain.Entities.Common;
 
 namespace TTERP.Domain.Entities
 {
-    public class Employee : IdentityUser<int>
+    public class Employee : IdentityUser<int>, IAuditableEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace TTERP.Domain.Entities.Common
 {
-    public abstract class BaseEntity<TId> : IEntity<TId>
+    public abstract class BaseEntity<TId> : IEntity<TId>, IAuditableEntity
     {
         public TId Id { get; protected set; }
         public DateTime CreatedDate { get; private set; }
