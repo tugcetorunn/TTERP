@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Commands\" />
+    <Folder Include="CQRS\Handlers\" />
+    <Folder Include="CQRS\Queries\" />
+    <Folder Include="Models\DTOs\" />
+    <Folder Include="Models\ViewModels\" />
+    <Folder Include="ServiceInterfaces\" />
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
 </Project>

@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.28" />
+    <Folder Include="Models\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

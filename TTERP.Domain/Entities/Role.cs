@@ -1,0 +1,41 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TTERP.Domain.Entities
+{
+    public class Role : IdentityRole<int>
+    {
+        public string NameForUI { get; set; }
+        public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;
+        public DateTime? UpdatedDate { get; private set; }
+        public DateTime? DeletedDate { get; private set; }
+        public string? CreatedBy { get; private set; }
+        public string? UpdatedBy { get; private set; }
+        public string? DeletedBy { get; private set; }
+        public bool IsActive { get; private set; } = true;
+        public bool IsDeleted { get; private set; } = false;
+
+        public void SetCreated(string user)
+        {
+            CreatedBy = user;
+        }
+
+        public void SetUpdated(string user)
+        {
+            UpdatedDate = DateTime.UtcNow;
+            UpdatedBy = user;
+        }
+
+        public void SoftDelete(string user)
+        {
+            IsDeleted = true;
+            IsActive = false;
+            DeletedDate = DateTime.UtcNow;
+            DeletedBy = user;
+        }
+    }
+}
