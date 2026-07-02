@@ -44,11 +44,6 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(x => x.MaterialId)
                    .OnDelete(DeleteBehavior.SetNull);
 
-            builder.HasOne(x => x.AssignedToEmployee)
-                   .WithMany(x => x.AssignedTasks)
-                   .HasForeignKey(x => x.AssignedToEmployeeId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(x => x.CreatedByEmployee)
                    .WithMany(x => x.CreatedTasks)
                    .HasForeignKey(x => x.CreatedByEmployeeId)

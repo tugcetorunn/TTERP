@@ -482,7 +482,7 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("float");
 
                     b.Property<decimal?>("Salary")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -538,9 +538,9 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be63bd52-d146-464b-8cb7-a32c7b126515",
+                            ConcurrencyStamp = "e015a85b-d965-4a74-b717-156beae25630",
                             CreatedBy = "System",
-                            CreatedDate = new DateTime(2026, 6, 23, 12, 34, 28, 199, DateTimeKind.Utc).AddTicks(6615),
+                            CreatedDate = new DateTime(2026, 6, 25, 13, 57, 25, 672, DateTimeKind.Utc).AddTicks(3305),
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ali.ergul@sirket.com.tr",
                             EmailConfirmed = false,
@@ -554,11 +554,11 @@ namespace TTERP.Persistence.Migrations
                             NationalId = "12345678912",
                             NormalizedEmail = "ALI.ERGUL@SIRKET.COM.TR",
                             NormalizedUserName = "ALIERGUL",
-                            PasswordHash = "AQAAAAIAAYagAAAAENDHXZV1W0XYdMJhVmQfxKg2+trSdOQ367i8a/aFFMeEUSU25KNer66kIQsU/pvaHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGh+fxY/2/XIZMDUDdRuExBcT0hD8S9JFcVgkazQrpwldzFxh/yH3wUE9BzluNjmjw==",
                             PhoneNumber = "5551112345",
                             PhoneNumberConfirmed = false,
                             RegistrationNumber = 10001,
-                            SecurityStamp = "4da1b920-cfbd-4d77-b4a8-9f4fa1e848d2",
+                            SecurityStamp = "8c15adb5-7262-4ec7-9c71-c569428cc4f2",
                             TwoFactorEnabled = false,
                             UserName = "aliergul"
                         });
@@ -589,8 +589,8 @@ namespace TTERP.Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("FinalAmount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("FinalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("InvoiceDate")
                         .HasColumnType("datetime2");
@@ -616,11 +616,11 @@ namespace TTERP.Persistence.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("TotalAmountIncludingTax")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalAmountIncludingTax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -647,8 +647,8 @@ namespace TTERP.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("CostPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -707,6 +707,70 @@ namespace TTERP.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.MaterialWarehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("MaterialId", "WarehouseId")
+                        .IsUnique();
+
+                    b.ToTable("MaterialWarehouses");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Notification", b =>
@@ -819,13 +883,13 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Discount")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("FinalAmount")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -859,7 +923,7 @@ namespace TTERP.Persistence.Migrations
                         .HasDefaultValue(1);
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -895,6 +959,9 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -903,9 +970,7 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Discount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("money")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -926,21 +991,19 @@ namespace TTERP.Persistence.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<double>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("float")
+                        .HasDefaultValue(1.0);
 
-                    b.Property<decimal>("Tax")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("money")
-                        .HasDefaultValue(0m);
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -957,6 +1020,70 @@ namespace TTERP.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.OrderItemWarehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderItemId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("OrderItemId", "WarehouseId")
+                        .IsUnique();
+
+                    b.ToTable("OrderItemWarehouses");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.ParameterDefinition", b =>
@@ -1026,30 +1153,30 @@ namespace TTERP.Persistence.Migrations
                     b.HasIndex("ParamType")
                         .IsUnique();
 
-                    b.ToTable("ParameterDefinition");
+                    b.ToTable("ParameterDefinitions");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.ParameterValue", b =>
                 {
-                    b.Property<int>("ParameterDefinitionId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ParamValue")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -1059,28 +1186,50 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ParamCode")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("ParamValue")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ParameterDefinitionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ParameterDefinitionId", "ParamValue", "LanguageId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ParameterDefinitionId", "ParamCode", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("Parameters", t =>
+                    b.HasIndex("ParameterDefinitionId", "ParamValue", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("ParameterValues", t =>
                         {
                             t.HasCheckConstraint("CK_ParameterTranslation_LanguageId", "[LanguageId] IN (1, 2)");
                         });
@@ -1094,8 +1243,8 @@ namespace TTERP.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1107,9 +1256,8 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -1177,7 +1325,7 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CostPrice")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1188,6 +1336,9 @@ namespace TTERP.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -1219,10 +1370,10 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("StockQuantity")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("StockQuantity")
+                        .HasColumnType("float");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -1236,6 +1387,210 @@ namespace TTERP.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.ProductWarehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("ProductId", "WarehouseId")
+                        .IsUnique();
+
+                    b.ToTable("ProductWarehouses");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Production", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PlannedQuantity")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("SourceWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SourceWarehouseId");
+
+                    b.HasIndex("TargetWarehouseId");
+
+                    b.ToTable("Productions");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.ProductionItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ScrapQuantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("ProductionId", "MaterialId")
+                        .IsUnique();
+
+                    b.ToTable("ProductionItems");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Role", b =>
@@ -1308,7 +1663,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            CreatedDate = new DateTime(2026, 6, 23, 12, 34, 28, 377, DateTimeKind.Utc).AddTicks(5399),
+                            CreatedDate = new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(531),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Admin",
@@ -1319,7 +1674,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            CreatedDate = new DateTime(2026, 6, 23, 12, 34, 28, 377, DateTimeKind.Utc).AddTicks(5410),
+                            CreatedDate = new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(541),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Manager",
@@ -1330,7 +1685,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 3,
                             CreatedBy = "System",
-                            CreatedDate = new DateTime(2026, 6, 23, 12, 34, 28, 377, DateTimeKind.Utc).AddTicks(5413),
+                            CreatedDate = new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(544),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "User",
@@ -1341,7 +1696,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 4,
                             CreatedBy = "System",
-                            CreatedDate = new DateTime(2026, 6, 23, 12, 34, 28, 377, DateTimeKind.Utc).AddTicks(5415),
+                            CreatedDate = new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(546),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Auditor",
@@ -1431,30 +1786,44 @@ namespace TTERP.Persistence.Migrations
 
             modelBuilder.Entity("TTERP.Domain.Entities.SupplierMaterial", b =>
                 {
-                    b.Property<int>("SupplierId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("LeadTimeDays")
                         .HasColumnType("int");
@@ -1462,20 +1831,30 @@ namespace TTERP.Persistence.Migrations
                     b.Property<double?>("MOQ")
                         .HasColumnType("float");
 
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("SupplierId", "MaterialId");
+                    b.HasKey("Id");
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("SupplierMaterial");
+                    b.HasIndex("SupplierId", "MaterialId")
+                        .IsUnique();
+
+                    b.ToTable("SupplierMaterials");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Supply", b =>
@@ -1503,6 +1882,10 @@ namespace TTERP.Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DocumentNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
@@ -1519,12 +1902,6 @@ namespace TTERP.Persistence.Migrations
                     b.Property<int?>("LanguageSupportId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
@@ -1534,11 +1911,8 @@ namespace TTERP.Persistence.Migrations
                     b.Property<int?>("SupplyStatus")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -1549,13 +1923,97 @@ namespace TTERP.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("DocumentNumber");
 
-                    b.HasIndex("MaterialId");
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Supplies");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.SupplyItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ListPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SupplyId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplyId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("MaterialId", "WarehouseId")
+                        .IsUnique();
+
+                    b.ToTable("SupplyItems");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Task", b =>
@@ -1670,43 +2128,64 @@ namespace TTERP.Persistence.Migrations
 
             modelBuilder.Entity("TTERP.Domain.Entities.TaskAssignment", b =>
                 {
-                    b.Property<int>("TaskId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("TaskId", "EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TaskId", "EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("TaskAssignments");
                 });
@@ -1772,40 +2251,61 @@ namespace TTERP.Persistence.Migrations
 
             modelBuilder.Entity("TTERP.Domain.Entities.TeamManager", b =>
                 {
-                    b.Property<int>("TeamId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("TeamId", "ManagerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ManagerId")
+                        .IsUnique();
+
+                    b.HasIndex("TeamId", "ManagerId")
                         .IsUnique();
 
                     b.ToTable("TeamManagers");
@@ -1873,6 +2373,76 @@ namespace TTERP.Persistence.Migrations
                     b.ToTable("Titles");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.Warehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Warehouses");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("TTERP.Domain.Entities.Role", null)
@@ -1934,7 +2504,7 @@ namespace TTERP.Persistence.Migrations
                     b.HasOne("TTERP.Domain.Entities.Title", "Title")
                         .WithMany("Employees")
                         .HasForeignKey("TitleId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Team");
 
@@ -1948,6 +2518,25 @@ namespace TTERP.Persistence.Migrations
                         .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.MaterialWarehouse", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Material", "Material")
+                        .WithMany("MaterialWarehouses")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany("MaterialWarehouses")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Notification", b =>
@@ -1998,12 +2587,31 @@ namespace TTERP.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.OrderItemWarehouse", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.OrderItem", "OrderItem")
+                        .WithMany("OrderItemWarehouses")
+                        .HasForeignKey("OrderItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany("OrderItemWarehouses")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrderItem");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("TTERP.Domain.Entities.ParameterValue", b =>
                 {
                     b.HasOne("TTERP.Domain.Entities.ParameterDefinition", "ParameterDefinition")
                         .WithMany("ParameterValues")
                         .HasForeignKey("ParameterDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ParameterDefinition");
@@ -2029,6 +2637,71 @@ namespace TTERP.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.ProductWarehouse", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Product", "Product")
+                        .WithMany("ProductWarehouses")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany("ProductWarehouses")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Production", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Product", "Product")
+                        .WithMany("Productions")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "SourceWarehouse")
+                        .WithMany("SourceProductions")
+                        .HasForeignKey("SourceWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "TargetWarehouse")
+                        .WithMany("TargetProductions")
+                        .HasForeignKey("TargetWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SourceWarehouse");
+
+                    b.Navigation("TargetWarehouse");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.ProductionItem", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Material", "Material")
+                        .WithMany("ProductionItems")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Production", "Production")
+                        .WithMany("ProductionItems")
+                        .HasForeignKey("ProductionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Production");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.SupplierMaterial", b =>
@@ -2057,12 +2730,6 @@ namespace TTERP.Persistence.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("TTERP.Domain.Entities.Material", "Material")
-                        .WithMany("Supplies")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TTERP.Domain.Entities.Supplier", "Supplier")
                         .WithMany("Supplies")
                         .HasForeignKey("SupplierId")
@@ -2070,9 +2737,34 @@ namespace TTERP.Persistence.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.SupplyItem", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Material", "Material")
+                        .WithMany("SupplyItems")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Supply", "Supply")
+                        .WithMany("SupplyItems")
+                        .HasForeignKey("SupplyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany("SupplyItems")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Material");
 
-                    b.Navigation("Supplier");
+                    b.Navigation("Supply");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Task", b =>
@@ -2187,9 +2879,13 @@ namespace TTERP.Persistence.Migrations
 
             modelBuilder.Entity("TTERP.Domain.Entities.Material", b =>
                 {
+                    b.Navigation("MaterialWarehouses");
+
+                    b.Navigation("ProductionItems");
+
                     b.Navigation("SupplierMaterials");
 
-                    b.Navigation("Supplies");
+                    b.Navigation("SupplyItems");
 
                     b.Navigation("Tasks");
                 });
@@ -2203,6 +2899,11 @@ namespace TTERP.Persistence.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.OrderItem", b =>
+                {
+                    b.Navigation("OrderItemWarehouses");
+                });
+
             modelBuilder.Entity("TTERP.Domain.Entities.ParameterDefinition", b =>
                 {
                     b.Navigation("ParameterValues");
@@ -2212,7 +2913,16 @@ namespace TTERP.Persistence.Migrations
                 {
                     b.Navigation("OrderItems");
 
+                    b.Navigation("ProductWarehouses");
+
+                    b.Navigation("Productions");
+
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Production", b =>
+                {
+                    b.Navigation("ProductionItems");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Supplier", b =>
@@ -2220,6 +2930,11 @@ namespace TTERP.Persistence.Migrations
                     b.Navigation("SupplierMaterials");
 
                     b.Navigation("Supplies");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Supply", b =>
+                {
+                    b.Navigation("SupplyItems");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Task", b =>
@@ -2237,6 +2952,21 @@ namespace TTERP.Persistence.Migrations
             modelBuilder.Entity("TTERP.Domain.Entities.Title", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Warehouse", b =>
+                {
+                    b.Navigation("MaterialWarehouses");
+
+                    b.Navigation("OrderItemWarehouses");
+
+                    b.Navigation("ProductWarehouses");
+
+                    b.Navigation("SourceProductions");
+
+                    b.Navigation("SupplyItems");
+
+                    b.Navigation("TargetProductions");
                 });
 #pragma warning restore 612, 618
         }

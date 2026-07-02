@@ -29,6 +29,10 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasColumnType("datetime");
 
+            builder.Property(x => x.Amount)
+                   .IsRequired()
+                   .HasColumnType("decimal(18,2)");
+
             builder.HasOne(p => p.Order)
                    .WithMany(o => o.Payments)
                    .HasForeignKey(p => p.OrderId)

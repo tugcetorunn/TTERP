@@ -7,9 +7,9 @@ using TTERP.Domain.Entities.Common;
 
 namespace TTERP.Domain.Entities
 {
-    public class ParameterValue : BaseAuditEntity
+    public class ParameterValue : BaseEntity<int>
     {
-        public string ParamCode { get; set; }
+        public int ParamCode { get; set; }
         public string ParamValue { get; set; }
         public string? Description { get; set; }
         public int LanguageId { get; set; }

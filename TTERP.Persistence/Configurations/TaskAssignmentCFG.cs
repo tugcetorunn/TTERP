@@ -12,7 +12,9 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<TaskAssignment> builder)
         {
-            builder.HasKey(x => new { x.TaskId, x.EmployeeId });
+            //builder.HasKey(x => new { x.TaskId, x.EmployeeId });
+
+            builder.HasIndex(x => new { x.TaskId, x.EmployeeId }).IsUnique();
 
             builder.HasOne(x => x.Task)
                 .WithMany(x => x.TaskAssignments)

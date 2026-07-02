@@ -38,7 +38,7 @@ namespace TTERP.Persistence.Configurations
             builder.HasMany(m => m.SupplierMaterials)
                    .WithOne(sm => sm.Supplier)
                    .HasForeignKey(sm => sm.SupplierId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(m => m.Supplies)
                    .WithOne(s => s.Supplier)

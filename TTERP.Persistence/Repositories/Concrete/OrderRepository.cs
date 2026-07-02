@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,13 @@ namespace TTERP.Persistence.Repositories.Concrete
     {
         public OrderRepository(AppDbContext _context) : base(_context)
         {
+        }
+
+        public async Task<Order?> GetOrderWithOrderItemsAsync(int? orderId, CancellationToken cancellationToken)
+        {
+            return await context.Set<Order>()
+                                .Include(o => o.OrderItems)
+                                .FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted && o.IsActive, cancellationToken);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace TTERP.Domain.Entities
         public ICollection<Task>? AssignedTasks { get; set; }
         public ICollection<Task>? CreatedTasks { get; set; }
         public ICollection<TaskAssignment>? TaskAssignments { get; set; }
-        public double? Salary { get; set; }
+        public decimal? Salary { get; set; }
         public double? RightToAnnualLeave { get; set; }
         public string? InternalPhone { get; set; }
         public bool IsPasswordChanged { get; set; } = false;
@@ -43,24 +43,24 @@ namespace TTERP.Domain.Entities
         public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;
         public DateTime? UpdatedDate { get; private set; }
         public DateTime? DeletedDate { get; private set; }
-        public string? CreatedBy { get; private set; }
-        public string? UpdatedBy { get; private set; }
-        public string? DeletedBy { get; private set; }
+        public int? CreatedBy { get; private set; }
+        public int? UpdatedBy { get; private set; }
+        public int? DeletedBy { get; private set; }
         public bool IsActive { get; private set; } = true;
         public bool IsDeleted { get; private set; } = false;
 
-        public void SetCreated(string user)
+        public void SetCreated(int? user)
         {
             CreatedBy = user;
         }
 
-        public void SetUpdated(string user)
+        public void SetUpdated(int? user)
         {
             UpdatedDate = DateTime.UtcNow;
             UpdatedBy = user;
         }
 
-        public void SoftDelete(string user)
+        public void SoftDelete(int? user)
         {
             IsDeleted = true;
             IsActive = false;

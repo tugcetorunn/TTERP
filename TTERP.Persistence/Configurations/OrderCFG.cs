@@ -38,15 +38,15 @@ namespace TTERP.Persistence.Configurations
 
             builder.Property(o => o.TotalAmount)
                    .IsRequired()
-                   .HasColumnType("money");
+                   .HasColumnType("decimal(18,2)");
 
             builder.Property(o => o.Discount)
                    .IsRequired()
-                   .HasColumnType("money");
+                   .HasColumnType("decimal(18,2)");
 
             builder.Property(o => o.FinalAmount)
                    .IsRequired()
-                   .HasColumnType("money");
+                   .HasColumnType("decimal(18,2)");
 
             builder.Property(o => o.ConversationId)
                    .IsRequired(false);

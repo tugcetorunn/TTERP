@@ -13,16 +13,15 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ParameterValue> builder)
         {
-            builder.HasKey(x => new { x.ParameterDefinitionId, x.ParamValue, x.LanguageId });
+            //builder.HasKey(x => new { x.ParameterDefinitionId, x.ParamValue, x.LanguageId });
+
+            builder.HasIndex(x => new { x.ParameterDefinitionId, x.ParamValue, x.LanguageId })
+                   .IsUnique();
 
             builder.HasOne(x => x.ParameterDefinition)
                 .WithMany(x => x.ParameterValues)
                 .HasForeignKey(x => x.ParameterDefinitionId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Property(x => x.ParamCode)
-                .IsRequired()
-                .HasMaxLength(30);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(x => new { x.ParameterDefinitionId, x.ParamCode, x.LanguageId })
                    .IsUnique();

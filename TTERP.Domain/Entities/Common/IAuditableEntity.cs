@@ -11,14 +11,14 @@ namespace TTERP.Domain.Entities.Common
         DateTime CreatedDate { get; }
         DateTime? UpdatedDate { get; }
         DateTime? DeletedDate { get; }
-        string CreatedBy { get; }
-        string? UpdatedBy { get; }
-        string? DeletedBy { get; }
+        int? CreatedBy { get; }
+        int? UpdatedBy { get; }
+        int? DeletedBy { get; }
         bool IsActive { get; }
         bool IsDeleted { get; }
 
-        void SetCreated(string user);
-        void SetUpdated(string user);
-        void SoftDelete(string user);
+        void SetCreated(int? user);
+        void SetUpdated(int? user);
+        void SoftDelete(int? user);
     }
 }

@@ -17,8 +17,17 @@ namespace TTERP.Persistence.Configurations
                    .IsUnique();
 
             builder.Property(x => x.InvoiceNumber)
-                .HasMaxLength(16)
-                .IsRequired();
+                   .HasMaxLength(16)
+                   .IsRequired();
+
+            builder.Property(i => i.TotalAmount)
+                   .HasColumnType("decimal(18,2)");
+
+            builder.Property(i => i.TotalTax)
+                   .HasColumnType("decimal(18,2)");
+
+            builder.Property(i => i.FinalAmount)
+                   .HasColumnType("decimal(18,2)");
         }
     }
 }

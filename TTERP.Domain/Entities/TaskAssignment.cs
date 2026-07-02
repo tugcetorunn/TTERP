@@ -7,7 +7,7 @@ using TTERP.Domain.Entities.Common;
 
 namespace TTERP.Domain.Entities
 {
-    public class TaskAssignment : BaseAuditEntity
+    public class TaskAssignment : BaseEntity<int>
     {
         public int TaskId { get; set; }
         public Task? Task { get; set; }

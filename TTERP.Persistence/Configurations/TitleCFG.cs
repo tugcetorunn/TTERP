@@ -27,7 +27,7 @@ namespace TTERP.Persistence.Configurations
             builder.HasMany(x => x.Employees)
                 .WithOne(x => x.Title)
                 .HasForeignKey(x => x.TitleId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

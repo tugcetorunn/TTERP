@@ -14,8 +14,8 @@ namespace TTERP.Domain.Entities
         public DateTime PaymentDate { get; set; }
         public int? PaymentType { get; set; }
         public int? PaymentStatus { get; set; }
-        public double Amount { get; set; }
-        public string Currency { get; set; }
+        public decimal Amount { get; set; }
+        public int Currency { get; set; }
         public string? Note { get; set; }
     }
 }

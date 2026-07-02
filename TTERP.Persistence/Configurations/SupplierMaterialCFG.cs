@@ -13,7 +13,9 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<SupplierMaterial> builder)
         {
-            builder.HasKey(sm => new { sm.SupplierId, sm.MaterialId });
+            builder.HasIndex(sm => new { sm.SupplierId, sm.MaterialId }).IsUnique();
+
+            //builder.HasKey(sm => new { sm.SupplierId, sm.MaterialId });
 
             builder.HasOne(sm => sm.Supplier)
                .WithMany(s => s.SupplierMaterials)
@@ -24,6 +26,10 @@ namespace TTERP.Persistence.Configurations
                 .WithMany(m => m.SupplierMaterials)
                 .HasForeignKey(sm => sm.MaterialId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(sm => sm.UnitPrice)
+                   .IsRequired()
+                   .HasColumnType("decimal(18,4)");
         }
     }
 }

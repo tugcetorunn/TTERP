@@ -14,6 +14,7 @@ namespace TTERP.Domain.Entities
         public string Message { get; set; }
         public int EmployeeId { get; set; }
         public Employee? Employee { get; set; }
+        public string? ActionUrl { get; set; }
         public bool IsRead { get; set; } = false;
     }
 }

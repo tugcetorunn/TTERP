@@ -60,6 +60,9 @@ namespace TTERP.Persistence.Configurations
                    .HasColumnType("bit")
                    .HasDefaultValue(false);
 
+            builder.HasIndex(x => x.RegistrationNumber)
+                   .IsUnique();
+
             builder.Property(x => x.RegistrationNumber)
                    .IsRequired()
                    .HasMaxLength(6);
@@ -67,22 +70,18 @@ namespace TTERP.Persistence.Configurations
             builder.Property(x => x.ImagePath)
                    .HasMaxLength(200);
 
-            builder.Property(x => x.Salary)
-                   .IsRequired(false)
-                   .HasColumnType("money");
-
             builder.Property(x => x.RightToAnnualLeave)
                    .IsRequired(false);
 
             builder.HasOne(x => x.Team)
                    .WithMany(t => t.Members)
                    .HasForeignKey(x => x.TeamId)
-                   .OnDelete(DeleteBehavior.SetNull);
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Title)
                    .WithMany(t => t.Employees)
                    .HasForeignKey(x => x.TitleId)
-                   .OnDelete(deleteBehavior: DeleteBehavior.SetNull);
+                   .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
 
             builder.HasMany(x => x.Notifications)
                    .WithOne(n => n.Employee)

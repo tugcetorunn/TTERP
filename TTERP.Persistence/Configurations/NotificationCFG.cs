@@ -21,6 +21,10 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(250);
 
+            builder.Property(x => x.ActionUrl)
+                   .IsRequired(false)
+                   .HasMaxLength(150);
+
             builder.Property(x => x.IsRead)
                    .HasColumnType("bit")
                    .HasDefaultValue(false);

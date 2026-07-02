@@ -12,8 +12,6 @@ namespace TTERP.Domain.Entities
         public int TaskType { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
-        public int? AssignedToEmployeeId { get; set; }
-        public Employee? AssignedToEmployee { get; set; }
         public int? CreatedByEmployeeId { get; set; }
         public Employee? CreatedByEmployee { get; set; }
         public int? OrderId { get; set; }

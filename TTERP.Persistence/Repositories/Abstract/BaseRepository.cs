@@ -23,14 +23,14 @@ namespace TTERP.Persistence.Repositories.Abstract
 
         public async Task AddAsync(TEntity entity)
         {
-            entity.SetCreated(entity.CreatedBy ?? "System");
+            entity.SetCreated(entity.CreatedBy ?? 0); // 0 geçiyorsa System
             await context.AddAsync(entity);
             // UOW kullanıldığı için SaveChangesAsync çağrısı burada yapılmaz. UOW, tüm değişiklikleri tek bir işlem olarak kaydetmek için kullanılır. Transaction hatasız tamamlanması durumunda SaveChangesAsync çağrısı UOW tarafından yapılır.
         }
 
         public void UpdateAsync(TEntity entity)
         {
-            entity.SetUpdated(entity.UpdatedBy ?? "System");
+            entity.SetUpdated(entity.UpdatedBy ?? 0);
             context.Update(entity);
         }
 
@@ -45,7 +45,7 @@ namespace TTERP.Persistence.Repositories.Abstract
 
             if (entity != null)
             {
-                entity.SoftDelete(entity.DeletedBy ?? "System");
+                entity.SoftDelete(entity.DeletedBy ?? 0);
                 context.Update(entity);
             }
         }
@@ -64,6 +64,11 @@ namespace TTERP.Persistence.Repositories.Abstract
                 return await orderBy(query).Select(select).ToListAsync();
             else
                 return await query.Select(select).ToListAsync();
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return await context.Set<TEntity>().AnyAsync(predicate, cancellationToken);
         }
     }
 }

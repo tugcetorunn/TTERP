@@ -21,9 +21,9 @@ namespace TTERP.Domain.Entities
         public int? PaymentStatus { get; set; }
         public int? ShippingStatus { get; set; }
         public int Currency { get; set; }
-        public double TotalAmount { get; set; }
-        public double Discount { get; set; }
-        public double FinalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Discount { get; set; }
+        public decimal FinalAmount { get; set; }
         public int? ConversationId { get; set; }
     }
 }

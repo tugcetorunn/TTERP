@@ -13,8 +13,9 @@ namespace TTERP.Domain.Entities
         public int? OrderId { get; set; }
         public Order? Order { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public double TotalAmount { get; set; }
-        public double TotalAmountIncludingTax { get; set; }
-        public double FinalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTax { get; set; }
+        public decimal FinalAmount { get; set; }
+        public int Currency { get; set; } = 1;
     }
 }

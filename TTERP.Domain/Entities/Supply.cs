@@ -12,16 +12,14 @@ namespace TTERP.Domain.Entities
     /// </summary>
     public class Supply : BaseEntity<int>
     {
-        public int MaterialId { get; set; }
-        public Material? Material { get; set; }
-        public double Quantity { get; set; }
-        public double UnitPrice { get; set; } // tedarik anındaki fiyat, malzeme fiyatı değişebilir, tedarikteki fiyatı saklamak için
-        public double TotalPrice { get; set; }
+        public decimal TotalAmount { get; set; }
         public DateTime SupplyDate { get; set; }
-        public int? SupplyStatus { get; set; }
+        public string DocumentNumber { get; set; } // irsaliye no
+        public int SupplyStatus { get; set; } = 1; // planlandı
         public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
         public int? SupplierId { get; set; }
         public Supplier? Supplier { get; set; }
+        public ICollection<SupplyItem>? SupplyItems { get; set; } 
     }
 }

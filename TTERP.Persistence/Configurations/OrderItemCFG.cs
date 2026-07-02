@@ -8,6 +8,11 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
+            //builder.HasKey(oi => new {oi.OrderId, oi.ProductId});
+
+            builder.HasIndex(oi => new { oi.OrderId, oi.ProductId })
+                   .IsUnique(); // haskey yerine unique constraint tanýmladým çünkü orderItemWarehouse tablosuyla iliþki kurarken foreign key hatasý aldým. orderItem ile warehouse arasýndaki manytomany iliþkinin ara tablosu orderItemWarehouse. foreign key olarak orderItemId almaya çalýþýyorum fakat burada composite key tanýmý olduðu için patlýyor. mecburen tekil id kullanacaðým orderItemda. 
+
             builder.Property(oi => oi.OrderId)
                    .IsRequired();
 
@@ -21,23 +26,9 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasDefaultValue(1);
 
-            builder.Property(oi => oi.UnitPrice)
+            builder.Property(oi => oi.TaxRate)
                    .IsRequired()
-                   .HasColumnType("money");
-
-            builder.Property(oi => oi.Discount)
-                   .IsRequired()
-                   .HasColumnType("money")
-                   .HasDefaultValue(0m);
-
-            builder.Property(oi => oi.Tax)
-                   .IsRequired()
-                   .HasColumnType("money")
-                   .HasDefaultValue(0m);
-
-            builder.Property(oi => oi.TotalPrice)
-                   .IsRequired()
-                   .HasColumnType("money");
+                   .HasColumnType("decimal(5,2)");
 
             builder.HasOne(oi => oi.Order)
                    .WithMany(o => o.OrderItems)
@@ -47,6 +38,11 @@ namespace TTERP.Persistence.Configurations
             builder.HasOne(oi => oi.Product)
                    .WithMany(p => p.OrderItems)
                    .HasForeignKey(oi => oi.ProductId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(oi => oi.OrderItemWarehouses)
+                   .WithOne(oiw => oiw.OrderItem)
+                   .HasForeignKey(oiw => oiw.OrderItemId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }

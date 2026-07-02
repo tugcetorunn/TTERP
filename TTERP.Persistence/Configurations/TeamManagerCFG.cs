@@ -13,7 +13,7 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TeamManager> builder)
         {
-            builder.HasKey(x => new { x.TeamId, x.ManagerId});
+            builder.HasIndex(x => new { x.TeamId, x.ManagerId }).IsUnique();
 
             builder.HasIndex(x => x.ManagerId)
                    .IsUnique();

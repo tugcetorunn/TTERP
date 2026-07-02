@@ -17,21 +17,21 @@ namespace TTERP.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(p => p.Code)
+                .IsRequired()
+                .HasMaxLength(20);
+
             builder.Property(p => p.Description)
                 .IsRequired(false)
                 .HasMaxLength(200);
 
-            builder.Property(p => p.Price)
-                .IsRequired()
-                .HasColumnType("money");
-
             builder.Property(p => p.CostPrice)
                 .IsRequired()
-                .HasColumnType("money");
+                .HasColumnType("decimal(18,4)");
 
-            builder.Property(p => p.StockQuantity)
-                .IsRequired()
-                .HasColumnType("decimal(10,2)");
+            builder.Property(p => p.TaxRate)
+                   .IsRequired()
+                   .HasColumnType("decimal(5,2)");
 
             builder.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
@@ -42,6 +42,11 @@ namespace TTERP.Persistence.Configurations
                 .WithOne(oi => oi.Product)
                 .HasForeignKey(oi => oi.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.ProductWarehouses)
+                   .WithOne(pw => pw.Product)
+                   .HasForeignKey(pw => pw.ProductId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
