@@ -22,7 +22,7 @@ namespace TTERP.Domain.Entities
         public Product? Product { get; set; }
         public int? MaterialId { get; set; }
         public Material? Material { get; set; }
-        public ICollection<TaskAssignment>? TaskAssignments { get; set; }
+        public ICollection<TaskAssignment>? TaskAssignments { get; set; } = new List<TaskAssignment>();
         public DateTime DueDate { get; set; }
         public DateTime? CompletedDate { get; set; }
         public int? Priority { get; set; }

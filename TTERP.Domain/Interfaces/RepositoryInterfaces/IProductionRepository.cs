@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTERP.Domain.Entities;
+using Task = System.Threading.Tasks.Task;
 
 namespace TTERP.Domain.Interfaces
 {
     public interface IProductionRepository : IBaseRepository<Production>
     {
+        Task<Production> GetProductionWithItemsAsync(int productionId, CancellationToken cancellationToken = default);
     }
 }

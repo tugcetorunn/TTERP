@@ -10,6 +10,7 @@ namespace TTERP.Domain.Interfaces
 {
     public interface IProductWarehouseRepository : IBaseRepository<ProductWarehouse>
     {
-        Task DecreaseStockAsync(int warehouseId, int productId, double quantity, CancellationToken cancellationToken = default);
+        Task DecreaseStockAsync(int warehouseId, int productId, double quantity, int? reason, CancellationToken cancellationToken = default);
+        Task IncreaseStockAsync(int warehouseId, int productId, double quantity, int? reason, CancellationToken cancellationToken = default);
     }
 }

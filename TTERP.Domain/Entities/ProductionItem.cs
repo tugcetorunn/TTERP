@@ -15,7 +15,8 @@ namespace TTERP.Domain.Entities
         public Material? Material { get; set; }
         public int SourceWarehouseId { get; set; } // hammaddeler hangi depodan düşülecek
         public Warehouse? SourceWarehouse { get; set; }
-        public double Quantity { get; set; }
-        public double ScrapQuantity { get; set; } = 0; // fire miktarı
+        public double Quantity { get; set; } // planlanan miktar
+        public double? ActualQuantity { get; set; } // gerçekleşen miktar
+        public double? ScrapQuantity { get; set; } = 0; // fire miktarı
     }
 }

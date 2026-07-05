@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,13 @@ namespace TTERP.Persistence.Repositories.Concrete
     {
         public PaymentRepository(AppDbContext _context) : base(_context)
         {
+        }
+
+        public async Task<decimal> GetTotalPaidAmountByOrderIdAsync(int orderId, CancellationToken cancellationToken)
+        {
+            return await context.Payments
+                .Where(p => p.OrderId == orderId && p.PaymentStatus == 1 && !p.IsDeleted)
+                .SumAsync(p => p.Amount, cancellationToken);
         }
     }
 }

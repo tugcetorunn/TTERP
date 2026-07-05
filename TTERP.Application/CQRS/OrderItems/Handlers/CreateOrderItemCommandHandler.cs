@@ -12,6 +12,7 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.OrderItems.Handlers
 {
+    // mevcut bir sipaişe sonradan kalem eklemek için kullanılacak.
     public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, Response<int>>
     {
         private readonly IOrderItemRepository _orderItemRepository;

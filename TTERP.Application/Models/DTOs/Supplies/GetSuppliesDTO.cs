@@ -13,6 +13,7 @@ namespace TTERP.Application.Models.DTOs.Supplies
         public int Id { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime SupplyDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         public string DocumentNumber { get; set; }
         public int? SupplyStatus { get; set; }
         public string? SupplyStatusName { get; set; }

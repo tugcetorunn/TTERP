@@ -9,5 +9,6 @@ namespace TTERP.Domain.Interfaces
 {
     public interface IPaymentRepository : IBaseRepository<Payment>
     {
+        Task<decimal> GetTotalPaidAmountByOrderIdAsync(int orderId, CancellationToken cancellationToken);
     }
 }

@@ -21,5 +21,10 @@ namespace TTERP.Persistence.Repositories.Concrete
         {
             return await context.ParameterValues.Where(v => v.ParameterDefinition!.ParamType == paramType && v.ParamCode == paramCode).Select(v => v.ParamValue).FirstOrDefaultAsync(cancellationToken);
         }
+
+        public async Task<int?> ParamValueToParamCode(string paramType, string paramValue, CancellationToken cancellationToken = default)
+        {
+            return await context.ParameterValues.Where(v => v.ParameterDefinition!.ParamType == paramType && v.ParamValue == paramValue).Select(v => v.ParamCode).FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

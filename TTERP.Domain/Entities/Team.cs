@@ -12,8 +12,8 @@ namespace TTERP.Domain.Entities
     {
         public string Name { get; set; }
         public string? Description { get; set; }
-        public ICollection<Employee>? Members { get; set; }
-        public ICollection<TeamManager>? Managers { get; set; }
+        public ICollection<Employee>? Members { get; set; } = new List<Employee>();
+        public ICollection<TeamManager>? Managers { get; set; } = new List<TeamManager>();
 
     }
 }

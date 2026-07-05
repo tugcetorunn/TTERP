@@ -12,7 +12,7 @@ namespace TTERP.Domain.Entities
         public DateTime OrderDate { get; set; }
         public int CustomerId { get; set; }
         public Customer? Customer { get; set; }
-        public ICollection<OrderItem>? OrderItems { get; set; }
+        public ICollection<OrderItem>? OrderItems { get; set; } = new List<OrderItem>(); // bir order create edildiğinde order item da create edilecek, bu yüzden null olamaz. boş bir liste ile başlatıyoruz.
         public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
         public ICollection<Payment>? Payments { get; set; }

@@ -53,5 +53,11 @@ namespace TTERP.Persistence.Repositories.Concrete
             return await context.Set<Employee>()
                                 .MaxAsync(e => e.InternalPhone, cancellationToken);
         }
+
+        public async Task<bool> IsEmployeeInAnyTeamAsync(int memberId, CancellationToken cancellationToken)
+        {
+            return await context.Set<Employee>()
+                          .AnyAsync(e => e.Id == memberId && e.TeamId.HasValue && !e.IsDeleted && e.IsActive, cancellationToken);
+        }
     }
 }

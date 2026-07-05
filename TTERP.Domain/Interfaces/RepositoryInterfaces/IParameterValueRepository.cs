@@ -10,5 +10,6 @@ namespace TTERP.Domain.Interfaces
     public interface IParameterValueRepository : IBaseRepository<ParameterValue>
     {
         Task<string?> ParamCodeToParamValue(string paramType, int paramCode, CancellationToken cancellationToken = default);
+        Task<int?> ParamValueToParamCode(string paramType, string paramValue, CancellationToken cancellationToken = default);
     }
 }

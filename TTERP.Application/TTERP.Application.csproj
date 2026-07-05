@@ -8,24 +8,7 @@
 
   <ItemGroup>
     <Folder Include="CQRS\OrderItemWarehouses\Commands\" />
-    <Folder Include="CQRS\ParameterDefinitions\Commands\" />
-    <Folder Include="CQRS\ProductionItems\Commands\" />
-    <Folder Include="CQRS\Productions\Commands\" />
     <Folder Include="CQRS\ProductWarehouses\Commands\" />
-    <Folder Include="CQRS\SupplyItems\Commands\" />
-    <Folder Include="CQRS\Teams\Commands\" />
-    <Folder Include="CQRS\TeamManagers\Commands\" />
-    <Folder Include="CQRS\Titles\Commands\" />
-    <Folder Include="CQRS\TaskAssignments\Commands\" />
-    <Folder Include="CQRS\Payments\Commands\" />
-    <Folder Include="CQRS\Roles\Commands\" />
-    <Folder Include="CQRS\Suppliers\Commands\" />
-    <Folder Include="CQRS\Supplies\Commands\" />
-    <Folder Include="CQRS\Tasks\Commands\" />
-    <Folder Include="CQRS\SupplierMaterials\Commands\" />
-    <Folder Include="CQRS\Products\Commands\" />
-    <Folder Include="CQRS\ParameterValues\Commands\" />
-    <Folder Include="CQRS\Warehouses\Commands\" />
     <Folder Include="Generators\" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Validators\" />
@@ -35,6 +18,7 @@
     <PackageReference Include="Mapster" Version="10.0.9" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.9" />
     <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.28" />
   </ItemGroup>

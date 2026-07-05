@@ -13,6 +13,7 @@ namespace TTERP.Application.Models.DTOs.SupplierMaterials
         public string? MaterialName { get; set; }
         public int Currency { get; set; }
         public string CurrencyName { get; set; }
+        public decimal ListPrice { get; set; }
         public decimal UnitPrice { get; set; }
         public int? LeadTimeDays { get; set; } 
         public double? MOQ { get; set; }

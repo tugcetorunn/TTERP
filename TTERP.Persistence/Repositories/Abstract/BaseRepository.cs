@@ -28,7 +28,7 @@ namespace TTERP.Persistence.Repositories.Abstract
             // UOW kullanıldığı için SaveChangesAsync çağrısı burada yapılmaz. UOW, tüm değişiklikleri tek bir işlem olarak kaydetmek için kullanılır. Transaction hatasız tamamlanması durumunda SaveChangesAsync çağrısı UOW tarafından yapılır.
         }
 
-        public void UpdateAsync(TEntity entity)
+        public void Update(TEntity entity)
         {
             entity.SetUpdated(entity.UpdatedBy ?? 0);
             context.Update(entity);

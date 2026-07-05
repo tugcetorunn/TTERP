@@ -15,6 +15,7 @@ namespace TTERP.Domain.Entities
         public int MaterialId { get; set; }
         public Material? Material { get; set; }
         public int Currency { get; set; }
+        public decimal ListPrice { get; set; }
         public decimal UnitPrice { get; set; }
         public int? LeadTimeDays { get; set; } // teslim süresi
         public double? MOQ { get; set; } // minimum sipariş miktarı - MinimumOrderQuantity

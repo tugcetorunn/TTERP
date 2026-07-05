@@ -9,6 +9,6 @@ namespace TTERP.Domain.Entities
         public int WarehouseId { get; set; }
         public Warehouse? Warehouse { get; set; }
         public double Quantity { get; set; }
-        public int ReasonForEntryOrExit { get; set; } // parametreden
+        public int? ReasonForEntryOrExit { get; set; } // parametreden
     }
 }

@@ -12,7 +12,7 @@ namespace TTERP.Domain.Interfaces
     public interface IBaseRepository<TEntity> where TEntity : class, IAuditableEntity
     {
         Task AddAsync(TEntity entity);
-        void UpdateAsync(TEntity entity); // sadece ef core da state değiştirdiği için void
+        void Update(TEntity entity); // sadece ef core da state değiştirdiği için void
         Task DeleteAsync(int id);
         Task<TEntity> FindAsync(int id);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);

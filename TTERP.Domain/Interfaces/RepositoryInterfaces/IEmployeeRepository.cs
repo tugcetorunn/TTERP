@@ -13,5 +13,6 @@ namespace TTERP.Domain.Interfaces
         Task<List<int>> GetTeamEmployeeIdsAsync(int managerId);
         Task<int> GetMaxRegistrationNumberAsync(CancellationToken cancellationToken);
         Task<string?> GetMaxInternalPhoneAsync(CancellationToken cancellationToken);
+        Task<bool> IsEmployeeInAnyTeamAsync(int memberId, CancellationToken cancellationToken);
     }
 }

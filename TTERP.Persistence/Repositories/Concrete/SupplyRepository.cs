@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,13 @@ namespace TTERP.Persistence.Repositories.Concrete
     {
         public SupplyRepository(AppDbContext _context) : base(_context)
         {
+        }
+
+        public async Task<Supply?> GetSupplyWithItemsAsync(int supplyId, CancellationToken cancellationToken)
+        {
+            return await context.Supplies
+                .Include(s => s.SupplyItems)
+                .FirstOrDefaultAsync(s => s.Id == supplyId && !s.IsDeleted && s.IsActive, cancellationToken);
         }
     }
 }

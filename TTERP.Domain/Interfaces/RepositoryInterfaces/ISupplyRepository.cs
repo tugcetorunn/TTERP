@@ -9,5 +9,6 @@ namespace TTERP.Domain.Interfaces
 {
     public interface ISupplyRepository : IBaseRepository<Supply>
     {
+        Task<Supply?> GetSupplyWithItemsAsync(int supplyId, CancellationToken cancellationToken);
     }
 }
