@@ -10,6 +10,7 @@ namespace TTERP.Application.Models.DTOs.OrderItems
 {
     public class GetOrderItemsDTO
     {
+        public int Id { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public double Quantity { get; set; }

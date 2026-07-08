@@ -27,12 +27,12 @@ namespace TTERP.Persistence.Migrations
                     ImagePath = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -50,9 +50,9 @@ namespace TTERP.Persistence.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -74,12 +74,12 @@ namespace TTERP.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -105,12 +105,12 @@ namespace TTERP.Persistence.Migrations
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -125,18 +125,20 @@ namespace TTERP.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     Unit = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     CostPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    TaxRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     StockQuantity = table.Column<double>(type: "float", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -156,12 +158,12 @@ namespace TTERP.Persistence.Migrations
                     DefaultValue = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -184,12 +186,12 @@ namespace TTERP.Persistence.Migrations
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -207,12 +209,12 @@ namespace TTERP.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -230,12 +232,12 @@ namespace TTERP.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -250,17 +252,18 @@ namespace TTERP.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -296,20 +299,22 @@ namespace TTERP.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Currency = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CostPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    TaxRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     StockQuantity = table.Column<double>(type: "float", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -329,19 +334,19 @@ namespace TTERP.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ParamCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ParamCode = table.Column<int>(type: "int", nullable: false),
                     ParamValue = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
                     ParameterDefinitionId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -365,17 +370,18 @@ namespace TTERP.Persistence.Migrations
                     SupplierId = table.Column<int>(type: "int", nullable: false),
                     MaterialId = table.Column<int>(type: "int", nullable: false),
                     Currency = table.Column<int>(type: "int", nullable: false),
+                    ListPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     LeadTimeDays = table.Column<int>(type: "int", nullable: true),
                     MOQ = table.Column<double>(type: "float", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -417,19 +423,20 @@ namespace TTERP.Persistence.Migrations
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     RightToAnnualLeave = table.Column<double>(type: "float", nullable: true),
                     InternalPhone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    AnnualLeaveUsed = table.Column<double>(type: "float", nullable: false),
                     IsPasswordChanged = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -467,14 +474,15 @@ namespace TTERP.Persistence.Migrations
                     MaterialId = table.Column<int>(type: "int", nullable: false),
                     WarehouseId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
+                    ReasonForEntryOrExit = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -501,18 +509,20 @@ namespace TTERP.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PlannedQuantity = table.Column<double>(type: "float", nullable: false),
-                    SourceWarehouseId = table.Column<int>(type: "int", nullable: false),
+                    ActualQuantity = table.Column<double>(type: "float", nullable: true),
                     TargetWarehouseId = table.Column<int>(type: "int", nullable: false),
                     ProductionStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    WarehouseId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -525,17 +535,16 @@ namespace TTERP.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Productions_Warehouses_SourceWarehouseId",
-                        column: x => x.SourceWarehouseId,
-                        principalTable: "Warehouses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Productions_Warehouses_TargetWarehouseId",
                         column: x => x.TargetWarehouseId,
                         principalTable: "Warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Productions_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -547,14 +556,15 @@ namespace TTERP.Persistence.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     WarehouseId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
+                    ReasonForEntryOrExit = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -669,15 +679,16 @@ namespace TTERP.Persistence.Migrations
                     NotificationType = table.Column<int>(type: "int", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    ActionUrl = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     IsRead = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -710,12 +721,12 @@ namespace TTERP.Persistence.Migrations
                     ConversationId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -743,18 +754,19 @@ namespace TTERP.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SupplyDate = table.Column<DateTime>(type: "date", nullable: false),
+                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DocumentNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    SupplyStatus = table.Column<int>(type: "int", nullable: true),
+                    SupplyStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     EmployeeId = table.Column<int>(type: "int", nullable: true),
                     SupplierId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -784,12 +796,12 @@ namespace TTERP.Persistence.Migrations
                     ManagerId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -817,16 +829,18 @@ namespace TTERP.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductionId = table.Column<int>(type: "int", nullable: false),
                     MaterialId = table.Column<int>(type: "int", nullable: false),
+                    SourceWarehouseId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
-                    ScrapQuantity = table.Column<double>(type: "float", nullable: false),
+                    ActualQuantity = table.Column<double>(type: "float", nullable: true),
+                    ScrapQuantity = table.Column<double>(type: "float", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -844,6 +858,12 @@ namespace TTERP.Persistence.Migrations
                         principalTable: "Productions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductionItems_Warehouses_SourceWarehouseId",
+                        column: x => x.SourceWarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -856,16 +876,17 @@ namespace TTERP.Persistence.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: true),
                     InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalAmountIncludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FinalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -894,12 +915,12 @@ namespace TTERP.Persistence.Migrations
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -934,12 +955,12 @@ namespace TTERP.Persistence.Migrations
                     Note = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -962,7 +983,6 @@ namespace TTERP.Persistence.Migrations
                     TaskType = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    AssignedToEmployeeId = table.Column<int>(type: "int", nullable: true),
                     CreatedByEmployeeId = table.Column<int>(type: "int", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: true),
                     CustomerId = table.Column<int>(type: "int", nullable: true),
@@ -974,31 +994,31 @@ namespace TTERP.Persistence.Migrations
                     Status = table.Column<int>(type: "int", nullable: true),
                     HasConversation = table.Column<bool>(type: "bit", nullable: false),
                     ConversationId = table.Column<int>(type: "int", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_AspNetUsers_AssignedToEmployeeId",
-                        column: x => x.AssignedToEmployeeId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Tasks_AspNetUsers_CreatedByEmployeeId",
                         column: x => x.CreatedByEmployeeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Tasks_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tasks_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -1042,12 +1062,12 @@ namespace TTERP.Persistence.Migrations
                     TaxRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -1084,12 +1104,12 @@ namespace TTERP.Persistence.Migrations
                     Quantity = table.Column<double>(type: "float", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -1120,12 +1140,12 @@ namespace TTERP.Persistence.Migrations
                     Role = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     LanguageSupportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -1150,16 +1170,16 @@ namespace TTERP.Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "IsActive", "IsDeleted", "Name", "NameForUI", "NormalizedName", "UpdatedBy", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, "System", new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(531), null, null, true, false, "Admin", "Admin", "ADMIN", null, null },
-                    { 2, null, "System", new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(541), null, null, true, false, "Manager", "Yönetici", "MANAGER", null, null },
-                    { 3, null, "System", new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(544), null, null, true, false, "User", "Kullanıcı", "USER", null, null },
-                    { 4, null, "System", new DateTime(2026, 6, 25, 13, 57, 25, 929, DateTimeKind.Utc).AddTicks(546), null, null, true, false, "Auditor", "Denetçi", "AUDITOR", null, null }
+                    { 1, null, 0, new DateTime(2026, 7, 6, 14, 37, 28, 926, DateTimeKind.Utc).AddTicks(9862), null, null, true, false, "Admin", "Admin", "ADMIN", null, null },
+                    { 2, null, 0, new DateTime(2026, 7, 6, 14, 37, 28, 926, DateTimeKind.Utc).AddTicks(9869), null, null, true, false, "Manager", "Yönetici", "MANAGER", null, null },
+                    { 3, null, 0, new DateTime(2026, 7, 6, 14, 37, 28, 926, DateTimeKind.Utc).AddTicks(9871), null, null, true, false, "User", "Kullanıcı", "USER", null, null },
+                    { 4, null, 0, new DateTime(2026, 7, 6, 14, 37, 28, 926, DateTimeKind.Utc).AddTicks(9872), null, null, true, false, "Auditor", "Denetçi", "AUDITOR", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedBy", "CreatedDate", "DateOfBirth", "DeletedBy", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "Gender", "HireDate", "ImagePath", "InternalPhone", "IsActive", "IsDeleted", "LastName", "LeavingDate", "LockoutEnabled", "LockoutEnd", "MaritalStatus", "NationalId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RegistrationNumber", "RightToAnnualLeave", "Salary", "SecurityStamp", "TeamId", "TitleId", "TwoFactorEnabled", "UpdatedBy", "UpdatedDate", "UserName" },
-                values: new object[] { 1, 0, null, "e015a85b-d965-4a74-b717-156beae25630", "System", new DateTime(2026, 6, 25, 13, 57, 25, 672, DateTimeKind.Utc).AddTicks(3305), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "ali.ergul@sirket.com.tr", false, "Ali", null, new DateTime(2015, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, true, false, "Ergül", null, false, null, null, "12345678912", "ALI.ERGUL@SIRKET.COM.TR", "ALIERGUL", "AQAAAAIAAYagAAAAEGh+fxY/2/XIZMDUDdRuExBcT0hD8S9JFcVgkazQrpwldzFxh/yH3wUE9BzluNjmjw==", "5551112345", false, 10001, null, null, "8c15adb5-7262-4ec7-9c71-c569428cc4f2", null, null, false, null, null, "aliergul" });
+                columns: new[] { "Id", "AccessFailedCount", "Address", "AnnualLeaveUsed", "ConcurrencyStamp", "CreatedBy", "CreatedDate", "DateOfBirth", "DeletedBy", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "Gender", "HireDate", "ImagePath", "InternalPhone", "IsActive", "IsDeleted", "LastName", "LeavingDate", "LockoutEnabled", "LockoutEnd", "MaritalStatus", "NationalId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RegistrationNumber", "RightToAnnualLeave", "Salary", "SecurityStamp", "TeamId", "TitleId", "TwoFactorEnabled", "UpdatedBy", "UpdatedDate", "UserName" },
+                values: new object[] { 1, 0, null, 0.0, "f365e60c-07a6-4180-be3d-607d1bdc7b9b", 0, new DateTime(2026, 7, 6, 14, 37, 28, 730, DateTimeKind.Utc).AddTicks(3764), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "ali.ergul@sirket.com.tr", false, "Ali", null, new DateTime(2015, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, true, false, "Ergül", null, false, null, null, "12345678912", "ALI.ERGUL@SIRKET.COM.TR", "ALIERGUL", "AQAAAAIAAYagAAAAEGi+cz1ZmtpwcdmADpOWGuMani5+jYVVI/zYgufCO5CQ1S+D12gbfhrWp5nmvs6eUw==", "5551112345", false, 10001, null, null, "eb686c53-e81f-4395-90a0-ad956b39430a", null, null, false, null, null, "aliergul" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -1228,6 +1248,12 @@ namespace TTERP.Persistence.Migrations
                 column: "PhoneNumber",
                 unique: true,
                 filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_RegistrationNumber",
+                table: "AspNetUsers",
+                column: "RegistrationNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_TeamId",
@@ -1352,19 +1378,24 @@ namespace TTERP.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductionItems_SourceWarehouseId",
+                table: "ProductionItems",
+                column: "SourceWarehouseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Productions_ProductId",
                 table: "Productions",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Productions_SourceWarehouseId",
-                table: "Productions",
-                column: "SourceWarehouseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Productions_TargetWarehouseId",
                 table: "Productions",
                 column: "TargetWarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Productions_WarehouseId",
+                table: "Productions",
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -1436,11 +1467,6 @@ namespace TTERP.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_AssignedToEmployeeId",
-                table: "Tasks",
-                column: "AssignedToEmployeeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_CreatedByEmployeeId",
                 table: "Tasks",
                 column: "CreatedByEmployeeId");
@@ -1449,6 +1475,11 @@ namespace TTERP.Persistence.Migrations
                 name: "IX_Tasks_CustomerId",
                 table: "Tasks",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_EmployeeId",
+                table: "Tasks",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_MaterialId",

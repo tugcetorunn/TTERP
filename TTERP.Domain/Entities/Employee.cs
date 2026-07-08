@@ -37,6 +37,7 @@ namespace TTERP.Domain.Entities
         public decimal? Salary { get; set; }
         public double? RightToAnnualLeave { get; set; }
         public string? InternalPhone { get; set; }
+        public double AnnualLeaveUsed { get; set; } = 0;
         public bool IsPasswordChanged { get; set; } = false;
 
 

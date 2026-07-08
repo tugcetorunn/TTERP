@@ -8,5 +8,6 @@ namespace TTERP.Domain.Interfaces
 {
     public interface ITaskRepository : IBaseRepository<Task>
     {
+        Task<List<Task>> GetTasksByAssignmentRoleAsync(int? roleCode, List<int> targetEmployeeIds, CancellationToken cancellationToken);
     }
 }

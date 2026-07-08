@@ -53,10 +53,10 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(oi => oi.WarehouseId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(w => w.SourceProductions)
-                   .WithOne(sp => sp.SourceWarehouse)
-                   .HasForeignKey(sp => sp.SourceWarehouseId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasMany(w => w.SourceProductions)
+            //       .WithOne(sp => sp.SourceWarehouse)
+            //       .HasForeignKey(sp => sp.SourceWarehouseId)
+            //       .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(w => w.TargetProductions)
                    .WithOne(oi => oi.TargetWarehouse)

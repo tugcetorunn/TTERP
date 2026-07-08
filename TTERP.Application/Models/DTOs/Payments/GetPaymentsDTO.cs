@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.Payments
 {
     public class GetPaymentsDTO
     {
+        public int Id { get; set; }
         public int OrderId { get; set; }
         public DateTime PaymentDate { get; set; }
         public int? PaymentType { get; set; }

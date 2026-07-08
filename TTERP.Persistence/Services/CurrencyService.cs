@@ -17,9 +17,10 @@ namespace TTERP.Persistence.Services
         private readonly IParameterValueRepository _parameterRepository;
         private readonly string todayUrl = "https://www.tcmb.gov.tr/kurlar/today.xml";
 
-        public CurrencyService(HttpClient httpClient)
+        public CurrencyService(HttpClient httpClient, IParameterValueRepository parameterRepository)
         {
             _httpClient = httpClient;
+            _parameterRepository = parameterRepository;
         }
 
         public async Task<decimal> GetExchangeRateAsync(int fromCurrencyId, int toCurrencyId, DateTime date, CancellationToken cancellationToken = default)

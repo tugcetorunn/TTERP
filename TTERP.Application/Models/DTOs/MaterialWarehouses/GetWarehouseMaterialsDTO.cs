@@ -8,6 +8,7 @@ namespace TTERP.Application.Models.DTOs.MaterialWarehouses
 {
     public class GetWarehouseMaterialsDTO
     {
+        public int Id { get; set; }
         public int MaterialId { get; set; }
         public string MaterialName { get; set; }
         public double Quantity { get; set; }

@@ -22,12 +22,7 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(p => p.ProductId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.SourceWarehouse) // kaynk depo ilişkisi - hammadde (malzeme, material) çıkışında
-                   .WithMany(w => w.SourceProductions) 
-                   .HasForeignKey(p => p.SourceWarehouseId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(p => p.TargetWarehouse) // hedef depo - bitmiş ürün girişinde
+            builder.HasOne(p => p.TargetWarehouse) // hedef depo - bitmiş ürün girişinde (kaynak depo prop unu kldırdık çünkü kaynak depo prod itemlara bağlı yani birden fazla farklı depodan gelebilir.)
                    .WithMany(w => w.TargetProductions) 
                    .HasForeignKey(p => p.TargetWarehouseId)
                    .OnDelete(DeleteBehavior.Restrict);

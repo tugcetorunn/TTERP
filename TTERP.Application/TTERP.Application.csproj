@@ -7,18 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="CQRS\Authentications\Commands\" />
     <Folder Include="CQRS\OrderItemWarehouses\Commands\" />
     <Folder Include="CQRS\ProductWarehouses\Commands\" />
     <Folder Include="Generators\" />
-    <Folder Include="Models\ViewModels\" />
-    <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="Mapster" Version="10.0.9" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.9" />
     <PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.11" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.28" />
   </ItemGroup>

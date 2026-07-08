@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.SupplierMaterials
 {
     public class GetMaterialSuppliersDTO
     {
+        public int Id { get; set; }
         public int SupplierId { get; set; }
         public string? SupplierName { get; set; }
         public int Currency { get; set; }

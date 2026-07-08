@@ -63,10 +63,10 @@ namespace TTERP.Persistence.Configurations
                 NameForUI = "Denetçi"
             };
 
-            admin.SetCreated("System");
-            manager.SetCreated("System");
-            user.SetCreated("System");
-            auditor.SetCreated("System");
+            admin.SetCreated(0);
+            manager.SetCreated(0);
+            user.SetCreated(0);
+            auditor.SetCreated(0);
 
             builder.HasData(admin, manager, user, auditor);
 

@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.Invoices
 {
     public class GetInvoicesDTO
     {
+        public int Id { get; set; }
         public string InvoiceNumber { get; set; }
         public int? OrderId { get; set; }
         public DateTime InvoiceDate { get; set; }

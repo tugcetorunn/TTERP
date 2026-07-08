@@ -10,6 +10,6 @@ namespace TTERP.Domain.Interfaces
 {
     public interface IProductionRepository : IBaseRepository<Production>
     {
-        Task<Production> GetProductionWithItemsAsync(int productionId, CancellationToken cancellationToken = default);
+        Task<Production?> GetProductionWithItemsAsync(int productionId, CancellationToken cancellationToken = default);
     }
 }

@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.TaskAssignments
 {
     public class GetTaskAssignmentsDTO
     {
+        public int Id { get; set; }
         public int EmployeeId { get; set; }
         public string? EmployeeName { get; set; }
         public int Role { get; set; }

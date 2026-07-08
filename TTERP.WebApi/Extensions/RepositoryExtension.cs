@@ -1,4 +1,5 @@
 ﻿using TTERP.Domain.Interfaces;
+using TTERP.Persistence.Repositories.Abstract;
 using TTERP.Persistence.Repositories.Concrete;
 
 namespace TTERP.WebApi.Extensions
@@ -7,6 +8,7 @@ namespace TTERP.WebApi.Extensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();

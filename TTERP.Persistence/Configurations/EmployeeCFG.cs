@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,12 @@ namespace TTERP.Persistence.Configurations
 
             builder.Property(x => x.InternalPhone)
                    .HasMaxLength(10);
+
+            builder.Property(x => x.Email)
+                   .HasMaxLength(100);
+
+            builder.Property(x => x.NormalizedEmail)
+                   .HasMaxLength(100);
 
             builder.HasIndex(x => x.NationalId)
                    .IsUnique();
@@ -106,7 +113,7 @@ namespace TTERP.Persistence.Configurations
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            admin.SetCreated("System"); 
+            admin.SetCreated(0); // 0 ise system dir.
             admin.PasswordHash = new PasswordHasher<Employee>().HashPassword(admin, "123456");
 
             builder.HasData(admin);

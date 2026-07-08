@@ -22,18 +22,18 @@ namespace TTERP.Domain.Entities.Common
             CreatedDate = DateTime.UtcNow;
         }
 
-        public void SetCreated(int user)
+        public void SetCreated(int? user)
         {
             CreatedBy = user;
         }
 
-        public void SetUpdated(int user)
+        public void SetUpdated(int? user)
         {
             UpdatedDate = DateTime.UtcNow;
             UpdatedBy = user;
         }
 
-        public void SoftDelete(int user)
+        public void SoftDelete(int? user)
         {
             IsDeleted = true;
             IsActive = false;

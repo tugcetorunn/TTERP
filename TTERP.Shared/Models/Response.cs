@@ -38,13 +38,14 @@ namespace TTERP.Shared.Models
             };
         }
 
-        public static Response<T> Fail(int statusCode = 400, params string[] errors)
+        public static Response<T> Fail(int statusCode = 400, string message = "", params string[] errors)
         {
             return new Response<T>
             {
                 IsSuccess = false,
                 StatusCode = statusCode,
-                Errors = errors.ToList()
+                Errors = errors.ToList(),
+                Message = message
             };
         }
     }

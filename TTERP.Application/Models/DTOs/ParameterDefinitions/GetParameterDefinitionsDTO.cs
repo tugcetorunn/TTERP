@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.ParameterDefinitions
 {
     public class GetParameterDefinitionsDTO
     {
+        public int Id { get; set; }
         public string ParamType { get; set; }
         public string? Description { get; set; }
         public string? DataType { get; set; }

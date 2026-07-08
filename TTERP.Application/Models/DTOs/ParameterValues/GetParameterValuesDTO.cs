@@ -8,6 +8,7 @@ namespace TTERP.Application.Models.DTOs.ParameterValues
 {
     public class GetParameterValuesDTO
     {
+        public int Id { get; set; }
         public int ParamCode { get; set; }
         public string ParamValue { get; set; }
         public string? Description { get; set; }

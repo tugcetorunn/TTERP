@@ -9,6 +9,7 @@ namespace TTERP.Application.Models.DTOs.ProductionItems
 {
     public class GetProductionItemsDTO
     {
+        public int Id { get; set; }
         public int MaterialId { get; set; }
         public string? MaterialName { get; set; }
         public int SourceWarehouseId { get; set; }

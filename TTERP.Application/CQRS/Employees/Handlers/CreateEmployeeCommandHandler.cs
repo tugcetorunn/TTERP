@@ -1,45 +1,111 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTERP.Application.CQRS.Employees.Commands;
+using TTERP.Application.Interfaces;
+using TTERP.Application.Models.ViewModels;
+using TTERP.Application.Validators;
 using TTERP.Domain.Entities;
 using TTERP.Domain.Interfaces;
+using TTERP.Shared.Extensions;
 using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.Employees.Handlers
 {
-    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Response<int>>
+    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Response<CreateEmployeeResultVM>>
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IAuthService _authService;
+        private readonly UserManager<Employee> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
 
-        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork, IConfiguration configuration)
+        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork, IConfiguration configuration, IAuthService authService, UserManager<Employee> userManager, RoleManager<Role> roleManager)
         {
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
             _configuration = configuration;
+            _authService = authService;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public async Task<Response<int>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<Response<CreateEmployeeResultVM>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var employee = request.Adapt<Employee>();
+            try
+            {
+                var validator = new CreateEmployeeCommandValidator();
+                var validResult = validator.Validate(request);
 
-            employee.RegistrationNumber = await GenerateRegistrationNumberAsync(cancellationToken);
+                var validRoles = new[] { 2, 3 }; // "CALISAN", "TAKIM YONETICISI"
 
-            employee.InternalPhone = await GenerateInternalPhoneAsync(cancellationToken);
+                if (!validRoles.Contains(request.RoleId))
+                    return new Response<CreateEmployeeResultVM>
+                    {
+                        StatusCode = 400,
+                        IsSuccess = false,
+                        Message = "Geçersiz rol seçimi",
+                        Data = null
+                    };
 
-            employee.RightToAnnualLeave = CalculateAnnualLeave(request.HireDate);
+                request.FirstName = _authService.ToTurkishNameFormatter(request.FirstName);
+                request.LastName = _authService.ToTurkishNameFormatter(request.LastName);
 
-            await _employeeRepository.AddAsync(employee);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                var employee = request.Adapt<Employee>();
 
-            return Response<int>.Success(employee.Id, 201, "Çalışan başarıyla oluşturuldu.");
+                employee.RegistrationNumber = await GenerateRegistrationNumberAsync(cancellationToken);
+
+                employee.InternalPhone = await GenerateInternalPhoneAsync(cancellationToken);
+
+                employee.Email = await _authService.GenerateEmailAsync(request.FirstName, request.LastName);
+
+                employee.RightToAnnualLeave = CalculateAnnualLeave(request.HireDate) - employee.AnnualLeaveUsed;
+
+                employee.UserName = _authService.GenerateUsername(request.FirstName, request.LastName);
+
+                var password = await _authService.GenerateRandomPasswordAsync();
+
+                var result = await _userManager.CreateAsync(employee, password);
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    return Response<CreateEmployeeResultVM>.Fail(400, "Kullanıcı oluşturma hatası", errors);
+                }
+
+                var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
+                if (role == null)
+                {
+                    return Response<CreateEmployeeResultVM>.Fail(404, "Rol bulunamadı.");
+                }
+
+                var roleResult = await _userManager.AddToRoleAsync(employee, role.NormalizedName!);
+                if (roleResult.Succeeded)
+                {
+                    var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                    return Response<CreateEmployeeResultVM>.Fail(400, "Rol atanırken hata oluştu.", errors);
+                }
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                return Response<CreateEmployeeResultVM>.Success(new CreateEmployeeResultVM
+                {
+                    Employee = employee,
+                    InitialPassword = password
+                }, 201, "Çalışan başarıyla oluşturuldu.");
+            }
+            catch (Exception ex)
+            {
+
+                return ex.ToResponse<CreateEmployeeResultVM>();
+            }
         }
 
         private double CalculateAnnualLeave(DateTime hireDate)
