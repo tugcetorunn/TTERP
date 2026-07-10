@@ -25,17 +25,25 @@ namespace TTERP.Application.CQRS.ParameterDefinitions.Handlers
 
         public async Task<Response<int>> Handle(CreateParameterDefinitionCommand request, CancellationToken cancellationToken)
         {
-            var definition = request.Adapt<ParameterDefinition>();
-
-            if(request.ParameterValues != null && request.ParameterValues.Any())
+            if (request.ParameterValues != null)
             {
-                foreach (var value in request.ParameterValues)
+                var duplicateValues = request.ParameterValues!
+                                                .GroupBy(x => new { x.ParamCode, x.LanguageId })
+                                                .Where(x => x.Count() > 1)
+                                                .Select(x => new
+                                                {
+                                                    x.Key.ParamCode,
+                                                    x.Key.LanguageId
+                                                })
+                                                .ToList();
+
+                if (duplicateValues.Any())
                 {
-                    var parameterValue = value.Adapt<ParameterValue>();
-                    definition.ParameterValues ??= new List<ParameterValue>();
-                    definition.ParameterValues.Add(parameterValue);
+                    throw new Exception("Aynı değer kodu aynı dilde birden fazla kez gönderilemez.");
                 }
             }
+
+            var definition = request.Adapt<ParameterDefinition>();
 
             await _parameterDefinitionRepository.AddAsync(definition);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

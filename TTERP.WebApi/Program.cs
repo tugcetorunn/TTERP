@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TTERP.Application.CQRS.Announcements.Handlers;
+using TTERP.Application.Mapster;
 using TTERP.Application.Validators;
 using TTERP.Domain.Entities;
 using TTERP.Persistence.Contexts;
@@ -26,6 +27,8 @@ builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAnnouncementQueryHandler).Assembly));
+
+MapsterConfig.RegisterMappings();
 
 builder.Services.AddSignalR();
 

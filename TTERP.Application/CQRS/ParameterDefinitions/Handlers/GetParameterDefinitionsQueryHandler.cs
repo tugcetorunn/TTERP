@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,10 @@ namespace TTERP.Application.CQRS.ParameterDefinitions.Handlers
         public async Task<Response<IReadOnlyList<GetParameterDefinitionsDTO>>> Handle(GetParameterDefinitionsQuery request, CancellationToken cancellationToken)
         {
             var definitions = await _parameterDefinitionRepository.GetListWithFilterAsync(
-                select: i => i.Adapt<GetParameterDefinitionsDTO>(),
-                where: i => i.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || i.IsActive == request.IsActive.Value));
+                select: d => d.Adapt<GetParameterDefinitionsDTO>(),
+                where: d => d.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || d.IsActive == request.IsActive.Value),
+                include: d => d.Include(d => d.ParameterValues)!
+                );
 
             return Response<IReadOnlyList<GetParameterDefinitionsDTO>>.Success(definitions.ToList());
         }

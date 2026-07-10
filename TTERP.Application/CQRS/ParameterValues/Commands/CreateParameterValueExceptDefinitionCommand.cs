@@ -8,8 +8,9 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.ParameterValues.Commands
 {
-    public class CreateParameterValueCommand : IRequest<Response<int>>
+    public class CreateParameterValueExceptDefinitionCommand : IRequest<Response<int>>
     {
+        public string ParamType { get; set; }
         public int ParamCode { get; set; }
         public string ParamValue { get; set; }
         public string? Description { get; set; }

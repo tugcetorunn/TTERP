@@ -12,7 +12,7 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.ParameterValues.Handlers
 {
-    public class CreateParameterValueCommandHandler : IRequestHandler<CreateParameterValueCommand, Response<int>>
+    public class CreateParameterValueCommandHandler : IRequestHandler<CreateParameterValueExceptDefinitionCommand, Response<int>>
     {
         private readonly IParameterValueRepository _parameterValueRepository;
         private readonly IParameterDefinitionRepository _parameterDefinitionRepository;
@@ -25,14 +25,18 @@ namespace TTERP.Application.CQRS.ParameterValues.Handlers
             _parameterDefinitionRepository = parameterDefinitionRepository;
         }
 
-        public async Task<Response<int>> Handle(CreateParameterValueCommand request, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(CreateParameterValueExceptDefinitionCommand request, CancellationToken cancellationToken)
         {
             var value = request.Adapt<ParameterValue>();
 
-            if (await _parameterDefinitionRepository.GetListWithFilterAsync(select: pd => pd.ParamType, where: pd => pd.ParamType == request.ParamType) == null)
+            var definition = await _parameterDefinitionRepository.FindAsync(value.Id);
+
+            if (definition == null)
             {
                 return Response<int>.Fail(404, "Parametre tanımı bulunamadı.");
             }
+
+            value.ParameterDefinitionId = definition.Id;
 
             await _parameterValueRepository.AddAsync(value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

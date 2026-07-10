@@ -14,6 +14,7 @@ namespace TTERP.Application.Models.DTOs.ParameterValues
         public string? Description { get; set; }
         public int LanguageId { get; set; }
         public string LanguageName { get; set; }
+        public int ParameterDefinitionId { get; set; }
         public string ParamType { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
