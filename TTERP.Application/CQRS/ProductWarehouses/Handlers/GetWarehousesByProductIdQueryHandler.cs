@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.ProductWarehouses.Handlers
 {
-    public class GetWarehousesByProductIdQueryHandler : IRequestHandler<GetWarehousesByProductIdQuery, Response<IReadOnlyList<GetProductWarehousesDTO>>>
+    public class GetWarehousesByProductIdQueryHandler : IRequestHandler<GetWarehousesByProductIdQuery, Response<IReadOnlyList<GetProductToWarehousesDTO>>>
     {
         private readonly IProductWarehouseRepository _productWarehouseRepository;
 
@@ -21,14 +22,24 @@ namespace TTERP.Application.CQRS.ProductWarehouses.Handlers
             _productWarehouseRepository = productWarehouseRepository;
         }
 
-        public async Task<Response<IReadOnlyList<GetProductWarehousesDTO>>> Handle(GetWarehousesByProductIdQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IReadOnlyList<GetProductToWarehousesDTO>>> Handle(GetWarehousesByProductIdQuery request, CancellationToken cancellationToken)
         {
-            var warehouses = await _productWarehouseRepository.GetListWithFilterAsync(
-                    pw => pw.Adapt<GetProductWarehousesDTO>(),
-                    pw => pw.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || pw.IsActive == request.IsActive.Value)
-                    && pw.ProductId == request.ProductId);
+            var stocks = await _productWarehouseRepository.GetProductsStockAsync(
+                    productId: request.ProductId,
+                    warehouseId: null,
+                    cancellationToken: cancellationToken);
 
-            return Response<IReadOnlyList<GetProductWarehousesDTO>>.Success(warehouses.ToList());
+            var result = stocks.Select(stock => new GetProductToWarehousesDTO
+            {
+                WarehouseId = stock.WarehouseId,
+                WarehouseName = stock.WarehouseName,
+                WarehouseCode = stock.WarehouseCode,
+                Quantity = stock.TotalQuantity,
+                IsActive = stock.IsActive,
+                IsDeleted = stock.IsDeleted
+            }).ToList();
+
+            return Response<IReadOnlyList<GetProductToWarehousesDTO>>.Success(result);
         }
     }
 }

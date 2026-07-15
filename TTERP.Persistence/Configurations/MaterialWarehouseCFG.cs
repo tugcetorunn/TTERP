@@ -24,8 +24,6 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(x => x.WarehouseId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasIndex(x => new { x.MaterialId, x.WarehouseId })
-                   .IsUnique();
         }
     }
 }

@@ -12,8 +12,11 @@ namespace TTERP.Application.CQRS.Warehouses.Commands
     {
         public string Name { get; set; }
         public string Code { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public string Address { get; set; }
+        public int CountryId { get; set; }
+        public int CityId { get; set; }
+        public int TownId { get; set; }
+        public int DistrictId { get; set; }
+        public int NeighborhoodId { get; set; }
+        public string AddressLine { get; set; }
     }
 }

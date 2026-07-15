@@ -25,4 +25,14 @@
     <ProjectReference Include="..\TTERP.Shared\TTERP.Shared.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="SeedData\LocationsInsertScript.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="NewFolder\" />
+	</ItemGroup>
+
 </Project>

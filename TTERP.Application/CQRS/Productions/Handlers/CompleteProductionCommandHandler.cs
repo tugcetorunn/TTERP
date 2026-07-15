@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTERP.Application.CQRS.Productions.Commands;
+using TTERP.Domain.Entities;
 using TTERP.Domain.Interfaces;
+using TTERP.Domain.Interfaces.RepositoryInterfaces;
 using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.Productions.Handlers
@@ -15,16 +17,18 @@ namespace TTERP.Application.CQRS.Productions.Handlers
         private readonly IProductionRepository _productionRepository;
         private readonly IProductWarehouseRepository _productWarehouseRepository;
         private readonly IMaterialWarehouseRepository _materialWarehouseRepository;
+        private readonly IMaterialStockReservationRepository _materialStockReservationRepository;
         private readonly IParameterValueRepository _parameterValueRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CompleteProductionCommandHandler(IProductionRepository productionRepository, IProductWarehouseRepository productWarehouseRepository, IUnitOfWork unitOfWork, IParameterValueRepository parameterValueRepository, IMaterialWarehouseRepository materialWarehouseRepository)
+        public CompleteProductionCommandHandler(IProductionRepository productionRepository, IProductWarehouseRepository productWarehouseRepository, IUnitOfWork unitOfWork, IParameterValueRepository parameterValueRepository, IMaterialWarehouseRepository materialWarehouseRepository, IMaterialStockReservationRepository materialStockReservationRepository)
         {
             _productionRepository = productionRepository;
             _productWarehouseRepository = productWarehouseRepository;
             _unitOfWork = unitOfWork;
             _parameterValueRepository = parameterValueRepository;
             _materialWarehouseRepository = materialWarehouseRepository;
+            _materialStockReservationRepository = materialStockReservationRepository;
         }
 
         public async Task<Response<int>> Handle(CompleteProductionCommand request, CancellationToken cancellationToken)
@@ -41,7 +45,7 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                 return Response<int>.Fail(400, "Üretim emri zaten tamamlanmış.");
             }
 
-            if (production.ProductionStatus != await _parameterValueRepository.ParamValueToParamCode("ProductionStatus", "InProgress", cancellationToken))
+            if (production.ProductionStatus != await _parameterValueRepository.ParamValueToParamCode("ProductionStatus", "Started", cancellationToken))
             {
                 return Response<int>.Fail(400, "Sadece 'Üretimde' durumundaki işler tamamlanabilir.");
             }
@@ -49,25 +53,80 @@ namespace TTERP.Application.CQRS.Productions.Handlers
             production.ActualQuantity = request.ActualQuantity;
             production.ProductionStatus = await _parameterValueRepository.ParamValueToParamCode("ProductionStatus", "Completed", cancellationToken);
 
+            var reservations = await _materialStockReservationRepository.GetByProductionIdAsync(
+                                                                        production.Id,
+                                                                        cancellationToken);
+
+            var materialExitReason = await _parameterValueRepository
+                .GetByShortCodeAsync(
+                    "ReasonForEntryOrExit",
+                    "HMDCKS",
+                    1,
+                    cancellationToken);
+
+            var materialReturnReason = await _parameterValueRepository
+                .GetByShortCodeAsync(
+                    "ReasonForEntryOrExit",
+                    "HMDGRS",
+                    1,
+                    cancellationToken);
+
             if (request.CompleteProductionItems != null && request.CompleteProductionItems.Any())
             {
-                foreach (var item in request.CompleteProductionItems)
+                foreach (var itemRequest in request.CompleteProductionItems)
                 {
-                    var productionItem = production.ProductionItems?.FirstOrDefault(pi => pi.Id == item.ProductionItemId);
-                    if (productionItem != null)
+                    var productionItem = production.ProductionItems!
+                        .FirstOrDefault(x => x.Id == itemRequest.ProductionItemId);
+
+                    if (productionItem == null)
                     {
-                        productionItem.ActualQuantity = item.ActualQuantity;
-                        productionItem.ScrapQuantity = item.ScrapQuantity;
-
-                        double totalDecreaseQuantity = (productionItem.ActualQuantity ?? 0) + (productionItem.ScrapQuantity ?? 0);
-
-                        await _materialWarehouseRepository.DecreaseStockAsync(
-                            productionItem.SourceWarehouseId,
-                            productionItem.MaterialId,
-                            totalDecreaseQuantity, 
-                            await _parameterValueRepository.ParamValueToParamCode("MaterialStockTransactionType", "ProductionConsumption"), // üretim tüketimi için stok hareketi türü
-                            cancellationToken);
+                        return Response<int>.Fail(
+                            404,
+                            "Üretim malzeme kalemi bulunamadı.");
                     }
+
+                    var reservation = reservations.FirstOrDefault(x =>
+                        x.ProductionItemId == productionItem.Id);
+
+                    if (reservation == null)
+                    {
+                        return Response<int>.Fail(
+                            400,
+                            "Üretim kalemine ait stok rezervasyonu bulunamadı.");
+                    }
+
+                    var actualConsumption =
+                        itemRequest.ActualQuantity +
+                        itemRequest.ScrapQuantity;
+
+                    var alreadyConsumed = reservation.ConsumedQuantity;
+                    var difference = actualConsumption - alreadyConsumed;
+
+                    if (difference > 0)
+                    {
+                        await _materialWarehouseRepository.DecreaseStockAsync(
+                            warehouseId: productionItem.SourceWarehouseId,
+                            materialId: productionItem.MaterialId,
+                            quantity: difference,
+                            reason: materialExitReason!.ParamCode,
+                            cancellationToken: cancellationToken);
+                    }
+                    else if (difference < 0)
+                    {
+                        await _materialWarehouseRepository.IncreaseStockAsync(
+                            warehouseId: productionItem.SourceWarehouseId,
+                            materialId: productionItem.MaterialId,
+                            quantity: Math.Abs(difference),
+                            reason: materialReturnReason!.ParamCode,
+                            cancellationToken: cancellationToken);
+                    }
+
+                    reservation.ConsumedQuantity = actualConsumption;
+                    reservation.IsReleased = true;
+                    reservation.ReleasedDate = DateTime.UtcNow;
+
+                    productionItem.ActualQuantity = itemRequest.ActualQuantity;
+                    productionItem.ScrapQuantity = itemRequest.ScrapQuantity;
                 }
             }
 
@@ -75,7 +134,7 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                 production.TargetWarehouseId, 
                 production.ProductId, 
                 request.ActualQuantity, 
-                await _parameterValueRepository.ParamValueToParamCode("MaterialStockTransactionType", "ProductionOutput"), // üretim çıktısı için stok hareketi türü
+                await _parameterValueRepository.ParamValueToParamCode("ReasonForEntryOrExit", "Production Input"), // üretim çıktısı için stok hareketi türü
                 cancellationToken);
 
             _productionRepository.Update(production);

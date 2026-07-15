@@ -13,5 +13,10 @@ namespace TTERP.Application.CQRS.Customers.Queries
     {
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetCustomersQuery(bool? isActive, bool? isDeleted)
+        {
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

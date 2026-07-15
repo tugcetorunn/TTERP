@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,19 @@ namespace TTERP.Application.CQRS.Products.Handlers
         public async Task<Response<IReadOnlyList<GetProductsDTO>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetListWithFilterAsync(
-                select: i => i.Adapt<GetProductsDTO>(),
-                where: i => i.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || i.IsActive == request.IsActive.Value));
+                    select: product => product,
+                    where: product =>
+                        product.IsDeleted == (request.IsDeleted ?? false) &&
+                        (!request.IsActive.HasValue ||
+                         product.IsActive == request.IsActive.Value),
+                    include: query => query
+                        .Include(product => product.Category)!);
 
-            return Response<IReadOnlyList<GetProductsDTO>>.Success(products.ToList());
+                            var result = products
+                                .Select(product => product.Adapt<GetProductsDTO>())
+                                .ToList();
+
+            return Response<IReadOnlyList<GetProductsDTO>>.Success(result);
         }
     }
 }

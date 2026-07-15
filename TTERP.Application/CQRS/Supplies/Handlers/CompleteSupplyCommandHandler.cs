@@ -35,7 +35,7 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
             }
 
             var deliveredParamCode = await _parameterValueRepository.ParamValueToParamCode("SupplyStatus", "Delivered", cancellationToken);
-            var entryParamCode = await _parameterValueRepository.ParamValueToParamCode("MaterialStockTransactionType", "SupplyEntry", cancellationToken);
+            var entryParamCode = await _parameterValueRepository.ParamValueToParamCode("ReasonForEntryOrExit", "Material Input", cancellationToken);
 
             if (supply.SupplyStatus == deliveredParamCode)
             {
@@ -43,6 +43,8 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
             }
 
             supply.SupplyStatus = deliveredParamCode;
+            supply.DeliveryDate = DateTime.UtcNow;
+            supply.DocumentNumber = request.DocumentNumber;
 
             if (supply.SupplyItems != null && supply.SupplyItems.Any())
             {

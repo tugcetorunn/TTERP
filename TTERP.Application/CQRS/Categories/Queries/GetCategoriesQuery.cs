@@ -13,5 +13,10 @@ namespace TTERP.Application.CQRS.Categories.Queries
     {
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetCategoriesQuery(bool? isActive, bool? isDeleted)
+        {
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

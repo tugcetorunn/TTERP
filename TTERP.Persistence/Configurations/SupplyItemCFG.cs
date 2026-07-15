@@ -31,9 +31,6 @@ namespace TTERP.Persistence.Configurations
             builder.Property(x => x.TaxRate)
                    .IsRequired()
                    .HasColumnType("decimal(5,2)");
-
-            builder.HasIndex(x => new { x.MaterialId, x.WarehouseId })
-                   .IsUnique();
         }
     }
 }

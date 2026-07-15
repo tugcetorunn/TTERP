@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace TTERP.Application.CQRS.Employees.Handlers
         {
             var employees = await _employeeRepository.GetListWithFilterAsync(
                 select: e => e.Adapt<GetEmployeesDTO>(),
-                where: e => e.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || e.IsActive == request.IsActive.Value));
+                where: e => e.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || e.IsActive == request.IsActive.Value),
+                include: s => s.Include(s => s.Country).Include(s => s.City).Include(s => s.Town).Include(s => s.District).Include(s => s.Neighborhood)!
+                );
 
             return Response<IReadOnlyList<GetEmployeesDTO>>.Success(employees.ToList());
         }

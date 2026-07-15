@@ -14,5 +14,10 @@ namespace TTERP.Application.CQRS.Titles.Queries
     {
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetTitlesQuery(bool? isActive, bool? isDeleted)
+        {
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

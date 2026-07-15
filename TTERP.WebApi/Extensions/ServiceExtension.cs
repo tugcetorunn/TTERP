@@ -14,6 +14,7 @@ namespace TTERP.WebApi.Extensions
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<IJWTService, JWTService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IWorkflowService, WorkflowService>();
             services.AddSingleton(new CultureInfo("tr-TR"));
         }
     }

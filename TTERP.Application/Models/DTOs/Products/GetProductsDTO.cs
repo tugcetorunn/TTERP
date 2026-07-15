@@ -25,7 +25,7 @@ namespace TTERP.Application.Models.DTOs.Products
         public string CategoryName { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<GetProductWarehousesDTO>? ProductWarehouses { get; set; }
+        public ICollection<GetProductToWarehousesDTO>? ProductWarehouses { get; set; }
         public ICollection<GetProductionsDTO>? Productions { get; set; }
     }
 }

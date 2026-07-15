@@ -13,11 +13,6 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductWarehouse> builder)
         {
-            //builder.HasKey(pw => new { pw.ProductId, pw.WarehouseId });
-            
-            builder.HasIndex(pw => new { pw.ProductId, pw.WarehouseId })
-                   .IsUnique();
-
             builder.HasOne(pw => pw.Product)
                    .WithMany(p => p.ProductWarehouses)
                    .HasForeignKey(pw => pw.ProductId)

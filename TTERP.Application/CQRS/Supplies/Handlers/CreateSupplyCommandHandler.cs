@@ -23,7 +23,13 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateSupplyCommandHandler(ISupplyRepository supplyRepository, ISupplierMaterialRepository supplierMaterialRepository, IUnitOfWork unitOfWork, IMaterialWarehouseRepository materialWarehouseRepository, IHttpContextAccessor httpContextAccessor, IParameterValueRepository parameterValueRepository)
+        public CreateSupplyCommandHandler(
+            ISupplyRepository supplyRepository,
+            ISupplierMaterialRepository supplierMaterialRepository,
+            IUnitOfWork unitOfWork,
+            IMaterialWarehouseRepository materialWarehouseRepository,
+            IHttpContextAccessor httpContextAccessor,
+            IParameterValueRepository parameterValueRepository)
         {
             _supplyRepository = supplyRepository;
             _supplierMaterialRepository = supplierMaterialRepository;
@@ -35,63 +41,122 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
 
         public async Task<Response<int>> Handle(CreateSupplyCommand request, CancellationToken cancellationToken)
         {
-            var supply = request.Adapt<Supply>();
+            if (!request.SupplierId.HasValue)
+            {
+                return Response<int>.Fail(400, "Tedarikçi seçilmelidir.");
+            }
 
-            var userIdClaims = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if(int.TryParse(userIdClaims, out int userId))
+            if (request.SupplyItems == null || !request.SupplyItems.Any())
+            {
+                return Response<int>.Fail(400, "En az bir tedarik kalemi eklenmelidir.");
+            }
+
+            var supply = request.Adapt<Supply>();
+            supply.SupplyItems = new List<SupplyItem>();
+
+            var userIdClaim = _httpContextAccessor.HttpContext?.User?
+                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userIdClaim, out var userId))
             {
                 supply.EmployeeId = userId;
             }
 
-            decimal totalAmount = 0m;
+            var deliveredParamCode = await _parameterValueRepository.ParamValueToParamCode(
+                "SupplyStatus",
+                "Delivered",
+                cancellationToken);
 
-            var supplyItems = request.SupplyItems?.Adapt<List<SupplyItem>>();
+            var supplyEntryParamCode = await _parameterValueRepository.ParamValueToParamCode(
+                "ReasonForEntryOrExit",
+                "SupplyEntry",
+                cancellationToken);
 
-            if (supplyItems != null && supplyItems.Any())
+            decimal totalAmount = 0;
+
+            foreach (var item in request.SupplyItems)
             {
-                foreach (var item in supplyItems)
+                if (item.Quantity <= 0)
                 {
-                    var supplierMaterial = await _supplierMaterialRepository.GetBySupplierAndMaterialAsync(supply.SupplierId, item.MaterialId, cancellationToken);
-                    if (supplierMaterial == null)
-                    {
-                        return Response<int>.Fail(404, $"İlgili tedarikçi malzeme kaydı bulunamadı.");
-                    }
+                    return Response<int>.Fail(400, "Tedarik miktarı sıfırdan büyük olmalıdır.");
+                }
 
-                    var materialWarehouse = await _materialWarehouseRepository.GetByMaterialAndWarehouseAsync(item.MaterialId, item.WarehouseId, cancellationToken);
-                    if (materialWarehouse == null)
-                    {
-                        return Response<int>.Fail(404, $"{item.MaterialId} nolu malzeme, {item.WarehouseId} nolu depoda bulunmamaktadır.");
-                    }
+                if (item.DiscountRate < 0 || item.DiscountRate > 100)
+                {
+                    return Response<int>.Fail(400, "İskonto oranı 0 ile 100 arasında olmalıdır.");
+                }
 
-                    item.Currency = supplierMaterial.Currency;
-                    item.ListPrice = supplierMaterial.ListPrice;
-                    item.UnitPrice = supplierMaterial.UnitPrice;
-                    item.TaxRate = supplierMaterial.Material!.TaxRate;
-                    decimal taxAmount = (item.UnitPrice * (decimal)item.Quantity) * (item.TaxRate / 100);
-                    item.TotalPrice = (item.UnitPrice * (decimal)item.Quantity) + taxAmount;
+                var supplierMaterial = await _supplierMaterialRepository.GetByIdWithDetailsAsync(
+                    item.SupplierMaterialId,
+                    cancellationToken);
 
-                    supply.SupplyItems!.Add(item);
+                if (supplierMaterial == null)
+                {
+                    return Response<int>.Fail(404, "İlgili tedarikçi malzeme kaydı bulunamadı.");
+                }
 
-                    totalAmount += item.TotalPrice;
+                if (supplierMaterial.SupplierId != request.SupplierId.Value)
+                {
+                    return Response<int>.Fail(
+                        400,
+                        $"{supplierMaterial.Material?.Name ?? "Seçilen malzeme"} bu tedarikçiye ait değildir.");
+                }
 
-                    if(supply.SupplyStatus == await _parameterValueRepository.ParamValueToParamCode("SupplyStatus", "Delivered", cancellationToken))
-                    {
-                        await _materialWarehouseRepository.IncreaseStockAsync(
-                            item.MaterialId, 
-                            item.WarehouseId, 
-                            item.Quantity, 
-                            await _parameterValueRepository.ParamValueToParamCode("MaterialStockTransactionType", "SupplyEntry"),
-                            cancellationToken);
-                    }
+                var unitPrice = item.UnitPrice.HasValue && item.UnitPrice.Value > 0
+                    ? item.UnitPrice.Value
+                    : supplierMaterial.UnitPrice;
+
+                var taxRate = supplierMaterial.Material?.TaxRate ?? 0;
+                var grossAmount = unitPrice * (decimal)item.Quantity;
+                var discountAmount = grossAmount * (item.DiscountRate / 100);
+                var netAmount = grossAmount - discountAmount;
+                var taxAmount = netAmount * (taxRate / 100);
+                var totalPrice = netAmount + taxAmount;
+
+                var supplyItem = new SupplyItem
+                {
+                    SupplierMaterialId = supplierMaterial.Id,
+                    MaterialId = supplierMaterial.MaterialId,
+                    WarehouseId = item.WarehouseId,
+                    Quantity = item.Quantity,
+                    Currency = supplierMaterial.Currency,
+                    ListPrice = supplierMaterial.ListPrice,
+                    UnitPrice = unitPrice,
+                    DiscountRate = item.DiscountRate,
+                    TaxRate = taxRate,
+                    NetAmount = netAmount,
+                    TaxAmount = taxAmount,
+                    TotalPrice = totalPrice
+                };
+
+                supply.SupplyItems.Add(supplyItem);
+                totalAmount += totalPrice;
+
+                if (supply.SupplyStatus == deliveredParamCode)
+                {
+                    await _materialWarehouseRepository.IncreaseStockAsync(
+                        warehouseId: item.WarehouseId,
+                        materialId: supplierMaterial.MaterialId,
+                        quantity: item.Quantity,
+                        reason: supplyEntryParamCode,
+                        cancellationToken: cancellationToken);
                 }
             }
 
             supply.TotalAmount = totalAmount;
 
+            if (supply.SupplyStatus == deliveredParamCode)
+            {
+                supply.DeliveryDate = DateTime.UtcNow;
+            }
+
             await _supplyRepository.AddAsync(supply);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Response<int>.Success(supply.Id, 201, "Tedarik kaydı başarıyla oluşturuldu.");
+            return Response<int>.Success(
+                supply.Id,
+                201,
+                "Tedarik kaydı başarıyla oluşturuldu.");
         }
     }
 }

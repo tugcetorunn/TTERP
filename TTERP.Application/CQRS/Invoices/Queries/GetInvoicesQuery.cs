@@ -13,5 +13,10 @@ namespace TTERP.Application.CQRS.Invoices.Queries
     {
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetInvoicesQuery(bool? isActive, bool? isDeleted)
+        {
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

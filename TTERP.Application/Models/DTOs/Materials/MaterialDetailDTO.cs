@@ -20,7 +20,7 @@ namespace TTERP.Application.Models.DTOs.Materials
         public double StockQuantity { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<MaterialStockLocationDTO>? MaterialStocks { get; set; }
+        public ICollection<GetMaterialWarehousesDTO>? MaterialWarehouses { get; set; }
         //public ICollection<SupplierMaterial>? SupplierMaterials { get; set; }
         //public ICollection<MaterialWarehouse>? MaterialWarehouses { get; set; }
         //public ICollection<SupplyItem>? SupplyItems { get; set; }

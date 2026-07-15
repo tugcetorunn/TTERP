@@ -49,7 +49,7 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(11);
 
-            builder.Property(x => x.Address)
+            builder.Property(x => x.AddressLine)
                    .HasMaxLength(300);
 
             builder.Property(x => x.DateOfBirth)
@@ -95,28 +95,30 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(n => n.EmployeeId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            var admin = new Employee
-            {
-                Id = 1,
-                FirstName = "Ali",
-                LastName = "Ergül",
-                Email = "ali.ergul@sirket.com.tr",
-                NormalizedEmail = "ALI.ERGUL@SIRKET.COM.TR",
-                NationalId = "12345678912",
-                DateOfBirth = new DateTime(1990, 1, 1),
-                PhoneNumber = "5551112345",
-                RegistrationNumber = 10001,
-                HireDate = new DateTime(2015, 1, 1),
-                UserName = "aliergul",
-                NormalizedUserName = "ALIERGUL",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .HasForeignKey(x => x.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            admin.SetCreated(0); // 0 ise system dir.
-            admin.PasswordHash = new PasswordHasher<Employee>().HashPassword(admin, "123456");
+            builder.HasOne(x => x.City)
+                .WithMany()
+                .HasForeignKey(x => x.CityId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(admin);
+            builder.HasOne(x => x.Town)
+                .WithMany()
+                .HasForeignKey(x => x.TownId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.District)
+                .WithMany()
+                .HasForeignKey(x => x.DistrictId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Neighborhood)
+                .WithMany()
+                .HasForeignKey(x => x.NeighborhoodId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

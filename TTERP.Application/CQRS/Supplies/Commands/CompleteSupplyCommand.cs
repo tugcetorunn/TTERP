@@ -11,5 +11,6 @@ namespace TTERP.Application.CQRS.Supplies.Commands
     public class CompleteSupplyCommand : IRequest<Response<int>>
     {
         public int SupplyId { get; set; }
+        public string DocumentNumber { get; set; }
     }
 }

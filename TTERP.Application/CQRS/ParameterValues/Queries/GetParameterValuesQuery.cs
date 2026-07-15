@@ -13,5 +13,12 @@ namespace TTERP.Application.CQRS.ParameterValues.Queries
     {
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public int? LanguageId { get; set; }
+        public GetParameterValuesQuery(bool? isActive, bool? isDeleted, int? languageId)
+        {
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+            LanguageId = languageId;
+        }
     }
 }

@@ -26,14 +26,8 @@ namespace TTERP.Persistence.Configurations
             builder.Property(m => m.ContactPhone)
                    .HasMaxLength(10);
 
-            builder.Property(m => m.Address)
+            builder.Property(m => m.AddressLine)
                    .HasMaxLength(300);
-
-            builder.Property(m => m.City)
-                   .HasMaxLength(50);
-
-            builder.Property(m => m.Country)
-                   .HasMaxLength(50);
 
             builder.HasMany(m => m.SupplierMaterials)
                    .WithOne(sm => sm.Supplier)
@@ -44,6 +38,31 @@ namespace TTERP.Persistence.Configurations
                    .WithOne(s => s.Supplier)
                    .HasForeignKey(s => s.SupplierId)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .HasForeignKey(x => x.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.City)
+                .WithMany()
+                .HasForeignKey(x => x.CityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Town)
+                .WithMany()
+                .HasForeignKey(x => x.TownId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.District)
+                .WithMany()
+                .HasForeignKey(x => x.DistrictId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Neighborhood)
+                .WithMany()
+                .HasForeignKey(x => x.NeighborhoodId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

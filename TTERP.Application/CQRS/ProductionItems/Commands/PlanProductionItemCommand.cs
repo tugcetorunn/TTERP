@@ -8,7 +8,7 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.ProductionItems.Commands
 {
-    public class PlanProductionItemCommand : IRequest<Response<int>>
+    public class PlanProductionItemCommand
     {
         public int MaterialId { get; set; }
         public int SourceWarehouseId { get; set; }

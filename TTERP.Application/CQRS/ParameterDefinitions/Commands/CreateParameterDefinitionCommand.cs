@@ -14,7 +14,7 @@ namespace TTERP.Application.CQRS.ParameterDefinitions.Commands
         public string ParamType { get; set; }
         public string Description { get; set; }
         public string DataType { get; set; }
-        public string DefaultValue { get; set; }
+        public int? DefaultValue { get; set; }
         public List<CreateParameterValueCommand>? ParameterValues { get; set; }
     }
 }

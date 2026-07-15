@@ -18,22 +18,23 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(bool? isActive, bool? isDeleted, int? languageId)
         {
-            var result = await _mediator.Send(new GetParameterValuesQuery());
+            var result = await _mediator.Send(new GetParameterValuesQuery(isActive, isDeleted, languageId));
 
             return CreateActionResultInstance(result);
         }
 
-        //[HttpGet(Name = "GetById")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var result = await _mediator.Send(new GetAnnouncementByIdQuery { Id = id });
-        //    return CreateActionResultInstance(result);
-        //}
+        [HttpGet(nameof(GetByParamType))]
+        public async Task<IActionResult> GetByParamType(string paramType, bool? isActive, bool? isDeleted)
+        {
+            var result = await _mediator.Send(new GetParameterValuesByTypeQuery(paramType, isActive, isDeleted));
+
+            return CreateActionResultInstance(result);
+        }
 
         [HttpPost(nameof(Create))]
-        public async Task<IActionResult> Create(CreateParameterValueCommand command)
+        public async Task<IActionResult> Create(CreateParameterValueExceptDefinitionCommand command)
         {
             var result = await _mediator.Send(command);
             return CreateActionResultInstance(result);

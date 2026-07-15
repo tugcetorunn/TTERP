@@ -15,5 +15,11 @@ namespace TTERP.Application.CQRS.SupplyItems.Queries
         public int SupplyId { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetSupplyItemsQuery(int supplyId, bool? isActive, bool? isDeleted)
+        {
+            SupplyId = supplyId;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

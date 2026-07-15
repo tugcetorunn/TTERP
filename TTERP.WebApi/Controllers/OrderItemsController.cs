@@ -18,9 +18,9 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new GetOrderItemsQuery());
+            var result = await _mediator.Send(new GetOrderItemsQuery(isActive, isDeleted));
 
             return CreateActionResultInstance(result);
         }

@@ -34,6 +34,26 @@ namespace TTERP.Persistence.Configurations
                 .IsRequired(false)
                 .HasMaxLength(200);
 
+            builder.Property(x => x.BadgeColor)
+                .IsRequired(false)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.Icon)
+                .IsRequired(false)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.CssClass)
+                .IsRequired(false)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.ShortCode)
+                .IsRequired(false)
+                .HasMaxLength(20);
+
+            builder.Property(x => x.Symbol)
+                .IsRequired(false)
+                .HasMaxLength(20);
+
             builder.Property(x => x.LanguageId)
                 .IsRequired();
 

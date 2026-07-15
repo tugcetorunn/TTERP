@@ -27,16 +27,14 @@ namespace TTERP.Application.CQRS.ParameterValues.Handlers
 
         public async Task<Response<int>> Handle(CreateParameterValueExceptDefinitionCommand request, CancellationToken cancellationToken)
         {
-            var value = request.Adapt<ParameterValue>();
-
-            var definition = await _parameterDefinitionRepository.FindAsync(value.Id);
+            var definition = await _parameterDefinitionRepository.FindAsync(request.ParameterDefinitionId);
 
             if (definition == null)
             {
                 return Response<int>.Fail(404, "Parametre tanımı bulunamadı.");
             }
 
-            value.ParameterDefinitionId = definition.Id;
+            var value = request.Adapt<ParameterValue>();
 
             await _parameterValueRepository.AddAsync(value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -9,6 +9,7 @@ namespace TTERP.Domain.Interfaces
 {
     public interface ISupplierMaterialRepository : IBaseRepository<SupplierMaterial>
     {
+        Task<SupplierMaterial?> GetByIdWithDetailsAsync(int? supplierMaterialId, CancellationToken cancellationToken);
         Task<SupplierMaterial?> GetBySupplierAndMaterialAsync(int? supplierId, int materialId, CancellationToken cancellationToken = default);
     }
 }

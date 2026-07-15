@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace TTERP.Application.CQRS.Warehouses.Handlers
         {
             var warehouses = await _warehouseRepository.GetListWithFilterAsync(
                     w => w.Adapt<GetWarehousesDTO>(),
-                    w => w.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || w.IsActive == request.IsActive.Value));
+                    w => w.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || w.IsActive == request.IsActive.Value),
+                    include: s => s.Include(s => s.Country).Include(s => s.City).Include(s => s.Town).Include(s => s.District).Include(s => s.Neighborhood)!
+                    );
 
             return Response<IReadOnlyList<GetWarehousesDTO>>.Success(warehouses.ToList());
         }

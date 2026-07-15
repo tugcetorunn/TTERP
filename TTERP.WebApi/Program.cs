@@ -12,6 +12,7 @@ using TTERP.Application.Mapster;
 using TTERP.Application.Validators;
 using TTERP.Domain.Entities;
 using TTERP.Persistence.Contexts;
+using TTERP.Persistence.SeedData;
 using TTERP.WebApi.Extensions;
 using TTERP.WebApi.Hubs;
 
@@ -31,6 +32,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAn
 MapsterConfig.RegisterMappings();
 
 builder.Services.AddSignalR();
+
+builder.Services.AddScoped<CurrencyExcelSeeder>();
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddValidatorsFromAssemblyContaining<CreateEmployeeCommandValidator>();
@@ -110,6 +113,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+await app.Services.SeedCurrencyValuesAsync();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -119,5 +124,24 @@ app.MapControllers();
 app.MapHub<NotificationHub>("/notification-hub");
 
 app.UseCors("AllowReact");
+
+using (var scope = app.Services.CreateScope())
+{
+    var context =
+        scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    var userManager =
+        scope.ServiceProvider
+            .GetRequiredService<UserManager<Employee>>();
+
+    // 1. Önce tablolar ve nullable FK kolonlarý oluþur.
+    await context.Database.MigrateAsync();
+
+    // 2. Ülke, þehir, ilçe, semt ve mahalleler eklenir.
+    await LocationSeeder.SeedAsync(context);
+
+    // 3. Lokasyon kayýtlarý artýk bulunduðu için admin eklenir/güncellenir.
+    await AdminSeeder.SeedAsync(userManager);
+}
 
 app.Run();

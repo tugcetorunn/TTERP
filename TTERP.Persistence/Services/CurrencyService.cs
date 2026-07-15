@@ -27,8 +27,8 @@ namespace TTERP.Persistence.Services
         {
             if (fromCurrencyId == toCurrencyId) return 1m;
 
-            string? fromCode = await _parameterRepository.ParamCodeToParamValue("Currency", fromCurrencyId, cancellationToken);
-            string? toCode = await _parameterRepository.ParamCodeToParamValue("Currency", toCurrencyId, cancellationToken);
+            string? fromCode = await _parameterRepository.ParamCodeToParamValue("Currency", fromCurrencyId, 1, cancellationToken);
+            string? toCode = await _parameterRepository.ParamCodeToParamValue("Currency", toCurrencyId, 1, cancellationToken);
 
             date = AdjustToWorkingDay(date);
 

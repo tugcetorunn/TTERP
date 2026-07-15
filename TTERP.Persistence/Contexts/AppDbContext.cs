@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,16 @@ namespace TTERP.Persistence.Contexts
         public DbSet<TeamManager> TeamManagers { get; set; }
         public DbSet<Title> Titles { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Town> Towns { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Neighborhood> Neighborhoods { get; set; }
+        public DbSet<PostalCode> PostalCodes { get; set; }
+        public DbSet<WorkflowHistory> WorkflowHistories { get; set; }
+        public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
+        public DbSet<ProductionProgress> ProductionProgresses { get; set; }
+        public DbSet<MaterialStockReservation> MaterialStockReservations { get; set; }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -107,53 +118,58 @@ namespace TTERP.Persistence.Contexts
 
             builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            builder.Entity<IdentityUserRole<int>>().HasData(
-                new IdentityUserRole<int>
-                {
-                    UserId = 1,
-                    RoleId = 1
-                }
-            );
-
             foreach (var entityType in builder.Model.GetEntityTypes())
             {
-                if (typeof(BaseEntity<int>).IsAssignableFrom(entityType.ClrType))
+                var entityBuilder = builder.Entity(entityType.ClrType);
+
+                if (entityType.FindProperty("CreatedDate") is not null)
                 {
-                    builder.Entity(entityType.ClrType)
-                        .Property("CreatedDate")
+                    entityBuilder.Property("CreatedDate")
                         .IsRequired()
                         .HasDefaultValueSql("GETUTCDATE()");
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("UpdatedDate")
+                if (entityType.FindProperty("UpdatedDate") is not null)
+                {
+                    entityBuilder.Property("UpdatedDate")
                         .IsRequired(false);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("DeletedDate")
+                if (entityType.FindProperty("DeletedDate") is not null)
+                {
+                    entityBuilder.Property("DeletedDate")
                         .IsRequired(false);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("CreatedBy")
+                if (entityType.FindProperty("CreatedBy") is not null)
+                {
+                    entityBuilder.Property("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasDefaultValue(1);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("UpdatedBy")
-                        .IsRequired(false)
-                        .HasMaxLength(50);
+                if (entityType.FindProperty("UpdatedBy") is not null)
+                {
+                    entityBuilder.Property("UpdatedBy")
+                        .IsRequired(false);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("DeletedBy")
-                        .IsRequired(false)
-                        .HasMaxLength(50);
+                if (entityType.FindProperty("DeletedBy") is not null)
+                {
+                    entityBuilder.Property("DeletedBy")
+                        .IsRequired(false);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("IsActive")
+                if (entityType.FindProperty("IsActive") is not null)
+                {
+                    entityBuilder.Property("IsActive")
                         .IsRequired()
                         .HasDefaultValue(true);
+                }
 
-                    builder.Entity(entityType.ClrType)
-                        .Property("IsDeleted")
+                if (entityType.FindProperty("IsDeleted") is not null)
+                {
+                    entityBuilder.Property("IsDeleted")
                         .IsRequired()
                         .HasDefaultValue(false);
                 }

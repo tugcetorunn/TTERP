@@ -17,6 +17,14 @@ namespace TTERP.Persistence.Repositories.Concrete
         {
         }
 
+        public async Task<SupplierMaterial?> GetByIdWithDetailsAsync(int? supplierMaterialId, CancellationToken cancellationToken)
+        {
+            return await context.SupplierMaterials
+                .AsNoTracking()
+                .Include(sm => sm.Material)
+                .FirstOrDefaultAsync(sm => sm.Id == supplierMaterialId && !sm.IsDeleted && sm.IsActive, cancellationToken);
+        }
+
         public async Task<SupplierMaterial?> GetBySupplierAndMaterialAsync(int? supplierId, int materialId, CancellationToken cancellationToken = default)
         {
             return await context.SupplierMaterials

@@ -22,9 +22,6 @@ namespace TTERP.Application.Validators
             RuleFor(x => x.DataType)
                 .MaximumLength(15);
 
-            RuleFor(x => x.DefaultValue)
-                .MaximumLength(100);
-
             //RuleForEach(x => x.ParameterValues)
                 //.SetValidator(new CreateParameterValueCommandValidator());
 

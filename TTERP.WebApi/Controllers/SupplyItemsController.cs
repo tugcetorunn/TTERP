@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TTERP.Application.CQRS.SupplyItems.Commands;
 using TTERP.Application.CQRS.SupplyItems.Queries;
 
 namespace TTERP.WebApi.Controllers
@@ -17,9 +18,17 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int supplyId, bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new GetSupplyItemsQuery());
+            var result = await _mediator.Send(new GetSupplyItemsQuery(supplyId, isActive, isDeleted));
+
+            return CreateActionResultInstance(result);
+        }
+
+        [HttpPost(nameof(AddItem))]
+        public async Task<IActionResult> AddItem(AddSupplyItemCommand command)
+        {
+            var result = await _mediator.Send(command);
 
             return CreateActionResultInstance(result);
         }

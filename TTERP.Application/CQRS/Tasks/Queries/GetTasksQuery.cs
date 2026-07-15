@@ -16,5 +16,11 @@ namespace TTERP.Application.CQRS.Tasks.Queries
         public List<int>? EmployeeIds { get; set; } // tek id de olabilir (çalışanlar kendi tasklarını görecek), müdürler için bölündeki çalışanların birden fazla id leri de olabilir (müdürler bölümlerindeki tüm çalışanların tasklarını görecek)
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetTasksQuery(List<int>? employeeIds, bool? isActive, bool? isDeleted)
+        {
+            EmployeeIds = employeeIds;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

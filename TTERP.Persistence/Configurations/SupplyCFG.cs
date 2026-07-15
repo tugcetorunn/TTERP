@@ -17,6 +17,10 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasColumnType("date");
 
+            builder.Property(s => s.DeliveryDate)
+                   .IsRequired(false)
+                   .HasColumnType("date");
+
             builder.Property(s => s.DocumentNumber)
                    .IsRequired(false)
                    .HasMaxLength(50);

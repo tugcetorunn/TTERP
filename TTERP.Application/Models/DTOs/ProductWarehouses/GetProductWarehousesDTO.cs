@@ -10,9 +10,15 @@ namespace TTERP.Application.Models.DTOs.ProductWarehouses
     public class GetProductWarehousesDTO
     {
         public int Id { get; set; }
+        public int ProductId { get; set; }
+        public string? ProductName { get; set; }
+        public string? ProductCode { get; set; }
         public int WarehouseId { get; set; }
         public string? WarehouseName { get; set; }
+        public string? WarehouseCode { get; set; }
         public double Quantity { get; set; }
+        public int ReasonForEntryOrExit { get; set; }
+        public string? ReasonForEntryOrExitName { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
     }

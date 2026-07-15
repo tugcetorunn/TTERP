@@ -13,7 +13,6 @@ namespace TTERP.Application.CQRS.Supplies.Commands
     {
         public decimal TotalAmount { get; set; }
         public DateTime SupplyDate { get; set; }
-        public string DocumentNumber { get; set; }
         public int? SupplyStatus { get; set; }
         public int? EmployeeId { get; set; }
         public int? SupplierId { get; set; }

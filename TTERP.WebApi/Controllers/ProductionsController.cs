@@ -18,19 +18,12 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new GetProductionsQuery());
+            var result = await _mediator.Send(new GetProductionsQuery(isActive, isDeleted));
 
             return CreateActionResultInstance(result);
         }
-
-        //[HttpGet(Name = "GetById")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var result = await _mediator.Send(new GetAnnouncementByIdQuery { Id = id });
-        //    return CreateActionResultInstance(result);
-        //}
 
         [HttpPost(nameof(Plan))]
         public async Task<IActionResult> Plan(PlanProductionCommand command)
@@ -48,6 +41,13 @@ namespace TTERP.WebApi.Controllers
 
         [HttpPost(nameof(Complete))]
         public async Task<IActionResult> Complete(CompleteProductionCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return CreateActionResultInstance(result);
+        }
+
+        [HttpPost(nameof(ChangeStatus))]
+        public async Task<IActionResult> ChangeStatus(ChangeProductionStatusCommand command)
         {
             var result = await _mediator.Send(command);
             return CreateActionResultInstance(result);

@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace TTERP.Application.CQRS.Customers.Handlers
         {
             var customers = await _customerRepository.GetListWithFilterAsync(
                 select: c => c.Adapt<GetCustomersDTO>(),
-                where: c => c.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || c.IsActive == request.IsActive.Value));
+                where: c => c.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || c.IsActive == request.IsActive.Value),
+                include: s => s.Include(s => s.Country).Include(s => s.City).Include(s => s.Town).Include(s => s.District).Include(s => s.Neighborhood)!
+                );
 
             return Response<IReadOnlyList<GetCustomersDTO>>.Success(customers.ToList());
         }

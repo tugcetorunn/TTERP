@@ -14,7 +14,12 @@ namespace TTERP.Application.CQRS.Employees.Commands
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalId { get; set; }
-        public string? Address { get; set; }
+        public string? AddressLine { get; set; }
+        public int CountryId { get; set; }
+        public int CityId { get; set; }
+        public int TownId { get; set; }
+        public int DistrictId { get; set; }
+        public int NeighborhoodId { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? ImagePath { get; set; }

@@ -18,19 +18,28 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int? materialId, int? warehouseId, bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new MaterialStockLocationQuery());
+            var result = await _mediator.Send(new GetMaterialWarehousesQuery(materialId, warehouseId, isActive, isDeleted));
 
             return CreateActionResultInstance(result);
         }
 
-        //[HttpGet(Name = "GetById")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var result = await _mediator.Send(new GetAnnouncementByIdQuery { Id = id });
-        //    return CreateActionResultInstance(result);
-        //}
+        [HttpGet(nameof(GetStockList))]
+        public async Task<IActionResult> GetStockList(int? materialId, int? warehouseId, bool? isActive, bool? isDeleted)
+        {
+            var result = await _mediator.Send(new GetMaterialsStockQuery(materialId, warehouseId, isActive, isDeleted));
+
+            return CreateActionResultInstance(result);
+        }
+
+        [HttpGet(nameof(GetTimeline))]
+        public async Task<IActionResult> GetTimeline(int? materialId, int? warehouseId, bool? isActive, bool? isDeleted)
+        {
+            var result = await _mediator.Send(new GetMaterialStockTimelineQuery(materialId, warehouseId, isActive, isDeleted));
+
+            return CreateActionResultInstance(result);
+        }
 
         [HttpPost(nameof(Create))]
         public async Task<IActionResult> Create(CreateMaterialWarehouseCommand command)

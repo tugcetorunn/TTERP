@@ -12,7 +12,7 @@ namespace TTERP.Domain.Entities
         public string ParamType { get; set; }
         public string? Description { get; set; }
         public string? DataType { get; set; } // string, int, bool, datetime...
-        public string? DefaultValue { get; set; }
+        public int? DefaultValue { get; set; } // default paramCode
         public ICollection<ParameterValue>? ParameterValues { get; set; }
     }
 }

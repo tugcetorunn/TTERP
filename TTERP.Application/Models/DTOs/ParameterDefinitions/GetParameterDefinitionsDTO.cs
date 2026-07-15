@@ -14,7 +14,7 @@ namespace TTERP.Application.Models.DTOs.ParameterDefinitions
         public string ParamType { get; set; }
         public string? Description { get; set; }
         public string? DataType { get; set; }
-        public string? DefaultValue { get; set; }
+        public int? DefaultValue { get; set; }
         public List<GetParameterValuesDTO>? ParameterValues { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

@@ -16,11 +16,17 @@ namespace TTERP.Domain.Entities
         public Material? Material { get; set; }
         public int WarehouseId { get; set; }
         public Warehouse? Warehouse { get; set; }
+        public int? SupplierMaterialId { get; set; }
+        public SupplierMaterial? SupplierMaterial { get; set; } // bu tedarik kalemi hangi teklif üzerinden yapılmıştı sorusunun cevabı olacak (ileride)
         public double Quantity { get; set; }
         public int Currency { get; set; }
         public decimal ListPrice { get; set; }
         public decimal UnitPrice { get; set; } // tedarik anındaki fiyat, malzeme fiyatı değişebilir, tedarikteki fiyatı saklamak için
+        public decimal TaxRate { get; set; } 
+        public decimal DiscountRate { get; set; } = 0;
+        // hesaplanan alanlar (snapshot)
+        public decimal NetAmount { get; set; }
+        public decimal TaxAmount { get; set; }
         public decimal TotalPrice { get; set; }
-        public decimal TaxRate { get; set; }
     }
 }

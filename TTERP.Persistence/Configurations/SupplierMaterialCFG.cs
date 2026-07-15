@@ -13,7 +13,7 @@ namespace TTERP.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<SupplierMaterial> builder)
         {
-            builder.HasIndex(sm => new { sm.SupplierId, sm.MaterialId }).IsUnique();
+            builder.HasIndex(sm => new { sm.SupplierId, sm.MaterialId, sm.Currency }).IsUnique();
 
             //builder.HasKey(sm => new { sm.SupplierId, sm.MaterialId });
 

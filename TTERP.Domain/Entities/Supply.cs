@@ -15,7 +15,7 @@ namespace TTERP.Domain.Entities
         public decimal TotalAmount { get; set; }
         public DateTime SupplyDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
-        public string DocumentNumber { get; set; } // irsaliye no
+        public string? DocumentNumber { get; set; } // irsaliye no
         public int? SupplyStatus { get; set; } = 1; // planlandı
         public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }

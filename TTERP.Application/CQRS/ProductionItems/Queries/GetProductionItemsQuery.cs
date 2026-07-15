@@ -14,5 +14,11 @@ namespace TTERP.Application.CQRS.ProductionItems.Queries
         public int ProductionId { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetProductionItemsQuery(int productionId, bool? isActive, bool? isDeleted)
+        {
+            ProductionId = productionId;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

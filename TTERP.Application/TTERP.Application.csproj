@@ -8,9 +8,22 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Authentications\Commands\" />
+    <Folder Include="CQRS\ProductionProgresses\Queries\" />
+    <Folder Include="CQRS\Towns\Commands\" />
+    <Folder Include="CQRS\Districts\Commands\" />
+    <Folder Include="CQRS\PostalCodes\Commands\" />
+    <Folder Include="CQRS\PostalCodes\Handlers\" />
+    <Folder Include="CQRS\PostalCodes\Queries\" />
+    <Folder Include="CQRS\Neighborhoods\Commands\" />
+    <Folder Include="CQRS\Cities\Commands\" />
+    <Folder Include="CQRS\Countries\Commands\" />
     <Folder Include="CQRS\OrderItemWarehouses\Commands\" />
-    <Folder Include="CQRS\ProductWarehouses\Commands\" />
     <Folder Include="Generators\" />
+    <Folder Include="Models\DTOs\PostalCodes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CQRS\ProductWarehouses\Queries\GetWarehousesByProductIdQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,17 +21,9 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(20);
 
-            builder.Property(w => w.Address)
+            builder.Property(w => w.AddressLine)
                    .IsRequired()
                    .HasMaxLength(300);
-
-            builder.Property(w => w.City)
-                   .IsRequired()
-                   .HasMaxLength(50);
-
-            builder.Property(w => w.Country)
-                   .IsRequired()
-                   .HasMaxLength(50);
 
             builder.HasMany(w => w.SupplyItems)
                    .WithOne(si => si.Warehouse)
@@ -53,15 +45,35 @@ namespace TTERP.Persistence.Configurations
                    .HasForeignKey(oi => oi.WarehouseId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasMany(w => w.SourceProductions)
-            //       .WithOne(sp => sp.SourceWarehouse)
-            //       .HasForeignKey(sp => sp.SourceWarehouseId)
-            //       .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasMany(w => w.TargetProductions)
                    .WithOne(oi => oi.TargetWarehouse)
                    .HasForeignKey(oi => oi.TargetWarehouseId)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .HasForeignKey(x => x.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.City)
+                .WithMany()
+                .HasForeignKey(x => x.CityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Town)
+                .WithMany()
+                .HasForeignKey(x => x.TownId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.District)
+                .WithMany()
+                .HasForeignKey(x => x.DistrictId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Neighborhood)
+                .WithMany()
+                .HasForeignKey(x => x.NeighborhoodId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

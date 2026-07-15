@@ -18,9 +18,9 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int? teamId, bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new GetTeamManagersQuery());
+            var result = await _mediator.Send(new GetTeamManagersQuery(teamId, isActive, isDeleted));
 
             return CreateActionResultInstance(result);
         }

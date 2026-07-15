@@ -9,10 +9,17 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.ProductWarehouses.Queries
 {
-    public class GetWarehousesByProductIdQuery : IRequest<Response<IReadOnlyList<GetProductWarehousesDTO>>>
+    public class GetWarehousesByProductIdQuery : IRequest<Response<IReadOnlyList<GetProductToWarehousesDTO>>>
     {
         public int ProductId { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public GetWarehousesByProductIdQuery(int productId, bool? isActive, bool? isDeleted)
+        {
+            ProductId = productId;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
+
     }
 }

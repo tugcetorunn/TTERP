@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace TTERP.Application.CQRS.ParameterValues.Handlers
         {
             var values = await _parameterValueRepository.GetListWithFilterAsync(
                 select: v => v.Adapt<GetParameterValuesDTO>(),
-                where: v => v.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || v.IsActive == request.IsActive.Value),
+                where: v => v.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || v.IsActive == request.IsActive.Value) && (!request.LanguageId.HasValue ||
+                v.LanguageId == request.LanguageId.Value),
                 include: v => v.Include(v => v.ParameterDefinition)!);
 
             return Response<IReadOnlyList<GetParameterValuesDTO>>.Success(values.ToList());

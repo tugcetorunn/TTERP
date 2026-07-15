@@ -14,5 +14,11 @@ namespace TTERP.Application.CQRS.OrderItemWarehouses.Queries
         public int OrderItemId { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public OrderItemStockLocationQuery(int orderItemId, bool? isActive, bool? isDeleted)
+        {
+            OrderItemId = orderItemId;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+        }
     }
 }

@@ -12,10 +12,10 @@ namespace TTERP.Domain.Entities
         public string Name { get; set; }
         public string Code { get; set; }
         public string? Description { get; set; }
-        public string Unit { get; set; }
+        public int? Unit { get; set; }
         public decimal CostPrice { get; set; } // son alınan fiyat, tedariklerde geçmişe dönük fiyat var.
         public decimal TaxRate { get; set; }
-        public double StockQuantity { get; set; }
+        public double StockQuantity { get; set; } = 0;
         public ICollection<SupplierMaterial>? SupplierMaterials { get; set; }
         public ICollection<MaterialWarehouse>? MaterialWarehouses { get; set; }
         public ICollection<SupplyItem>? SupplyItems { get; set; }

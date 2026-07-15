@@ -18,5 +18,6 @@ namespace TTERP.Domain.Entities
         public double Quantity { get; set; } // planlanan miktar
         public double? ActualQuantity { get; set; } // gerçekleşen miktar
         public double? ScrapQuantity { get; set; } = 0; // fire miktarı
+        public ICollection<MaterialStockReservation> MaterialStockReservations { get; set; } = new List<MaterialStockReservation>();
     }
 }

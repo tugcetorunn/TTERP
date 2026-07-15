@@ -13,6 +13,7 @@ namespace TTERP.Application.CQRS.SupplierMaterials.Commands
         public int SupplierId { get; set; }
         public int MaterialId { get; set; }
         public int Currency { get; set; }
+        public decimal ListPrice { get; set; }
         public decimal UnitPrice { get; set; }
         public int? LeadTimeDays { get; set; } 
         public double? MOQ { get; set; }

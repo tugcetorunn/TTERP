@@ -18,19 +18,12 @@ namespace TTERP.WebApi.Controllers
         }
 
         [HttpGet(nameof(GetList))]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int? supplierId, int? materialId, bool? isActive, bool? isDeleted)
         {
-            var result = await _mediator.Send(new GetSupplierMaterialsQuery());
+            var result = await _mediator.Send(new GetSupplierMaterialsQuery(supplierId, materialId, isActive, isDeleted));
 
             return CreateActionResultInstance(result);
         }
-
-        //[HttpGet(Name = "GetById")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var result = await _mediator.Send(new GetAnnouncementByIdQuery { Id = id });
-        //    return CreateActionResultInstance(result);
-        //}
 
         [HttpPost(nameof(Create))]
         public async Task<IActionResult> Create(CreateSupplierMaterialCommand command)

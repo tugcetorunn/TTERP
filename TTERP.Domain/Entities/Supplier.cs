@@ -13,9 +13,17 @@ namespace TTERP.Domain.Entities
         public string? ContactName { get; set; }
         public string? ContactEmail { get; set; }
         public string? ContactPhone { get; set; }
-        public string? Address { get; set; }
-        public string? City { get; set; }
-        public string? Country { get; set; }
+        public string? AddressLine { get; set; }
+        public int? CountryId { get; set; }
+        public int? CityId { get; set; }
+        public int? TownId { get; set; }
+        public int? DistrictId { get; set; }
+        public int? NeighborhoodId { get; set; }
+        public Country? Country { get; set; }
+        public City? City { get; set; }
+        public Town? Town { get; set; }
+        public District? District { get; set; }
+        public Neighborhood? Neighborhood { get; set; }
         public ICollection<SupplierMaterial>? SupplierMaterials { get; set; }
         public ICollection<Supply>? Supplies { get; set; }
     }
