@@ -16,7 +16,7 @@ namespace TTERP.Shared.Extensions
                 UnauthorizedAccessException => "Erişim yetkiniz yok",
                 ArgumentNullException => "Zorunlu alan eksik",
                 KeyNotFoundException => "Kayıt bulunamadı",
-                _ => "Beklenmeyen bir hata oluştu"
+                _ => ex.Message ?? "Beklenmeyen bir hata oluştu"
             };
 
             return new Response<T>
@@ -24,7 +24,7 @@ namespace TTERP.Shared.Extensions
                 StatusCode = statusCode,
                 IsSuccess = false,
                 Message = message,
-                Errors = new List<string> { ex.Message },
+                Errors = new List<string> { ex.Message! },
                 Data = default
             };
         }

@@ -21,23 +21,16 @@ namespace TTERP.Persistence.Repositories.Concrete
 
         public async Task DecreaseStockAsync(int warehouseId, int productId, double quantity, int? reason, CancellationToken cancellationToken = default)
         {
-            //var productWarehouse = await context.Set<ProductWarehouse>()
-            //                                    .FirstOrDefaultAsync(pw => pw.WarehouseId == warehouseId && pw.ProductId == productId, cancellationToken);
+            var product = await context.Products
+                .FirstOrDefaultAsync(
+                    x => x.Id == productId,
+                    cancellationToken);
 
-            //if (productWarehouse == null)
-            //    throw new InvalidOperationException($"Sipariş iptal edildi: Seçilen depoda (ID: {warehouseId}) bu ürüne (ID: {productId}) ait stok kaydı bulunamadı.");
-
-            //if (productWarehouse.Quantity < quantity)
-            //    throw new InvalidOperationException($"Sipariş iptal edildi: Seçilen depoda (ID: {warehouseId}) bu ürüne (ID: {productId}) ait stok yetersiz. İstenen miktar: {quantity}, depodaki miktar: {productWarehouse.Quantity}");
-
-            //productWarehouse.ReasonForEntryOrExit = reason;
-            //productWarehouse.Quantity -= quantity;
-
-            //var product = await context.Set<Product>().FirstOrDefaultAsync(p => p.Id == productWarehouse.ProductId, cancellationToken);
-            //if(product != null)
-            //{
-            //    product.StockQuantity -= quantity;
-            //}
+            if (product == null)
+            {
+                throw new KeyNotFoundException(
+                    $"Stok miktarı güncellenecek ürün bulunamadı. Ürün ID: {productId}");
+            }
 
             if (quantity <= 0)
             {
@@ -76,46 +69,11 @@ namespace TTERP.Persistence.Repositories.Concrete
                 movement,
                 cancellationToken);
 
-            var product = await context.Products
-                .FirstOrDefaultAsync(
-                    x => x.Id == productId,
-                    cancellationToken);
-
-            if (product != null)
-            {
-                product.StockQuantity -= quantity;
-            }
         }
 
 
         public async Task IncreaseStockAsync(int warehouseId, int productId, double quantity, int? reason, CancellationToken cancellationToken = default)
         {
-            //var productWarehouse = await context.Set<ProductWarehouse>()
-            //                                    .FirstOrDefaultAsync(pw => pw.WarehouseId == warehouseId && pw.ProductId == productId, cancellationToken);
-
-            //if (productWarehouse == null)
-            //{
-            //    productWarehouse = new ProductWarehouse
-            //    {
-            //        WarehouseId = warehouseId,
-            //        ProductId = productId,
-            //        Quantity = quantity,
-            //        ReasonForEntryOrExit = reason
-            //    };
-            //    await context.Set<ProductWarehouse>().AddAsync(productWarehouse, cancellationToken);
-            //}
-            //else
-            //{
-            //    productWarehouse.ReasonForEntryOrExit = reason;
-            //    productWarehouse.Quantity += quantity;
-            //}
-
-            //var product = await context.Set<Product>().FirstOrDefaultAsync(p => p.Id == productWarehouse.ProductId, cancellationToken);
-            //if (product != null)
-            //{
-            //    product.StockQuantity += quantity;
-            //}
-
             if (quantity <= 0)
             {
                 throw new ArgumentException(

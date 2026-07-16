@@ -191,7 +191,8 @@ namespace TTERP.Application.Mapster
 
             TypeAdapterConfig<Order, GetOrdersDTO>
                 .NewConfig()
-                .Map(d => d.EmployeeName, s => s.Employee != null ? s.Employee.FullName : null);
+                .Map(d => d.EmployeeName, s => s.Employee != null ? s.Employee.FullName : null)
+                .Map(d => d.CustomerName, s => s.Customer != null ? s.Customer.CompanyName : null);
 
             TypeAdapterConfig<OrderItem, AddOrderItemCommand>
                 .NewConfig()
