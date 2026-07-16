@@ -25,15 +25,15 @@ namespace TTERP.WebApi.Controllers
             return CreateActionResultInstance(result);
         }
 
-        //[HttpGet(Name = "GetById")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var result = await _mediator.Send(new GetAnnouncementByIdQuery { Id = id });
-        //    return CreateActionResultInstance(result);
-        //}
-
         [HttpPost(nameof(Create))]
         public async Task<IActionResult> Create(CreateOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return CreateActionResultInstance(result);
+        }
+
+        [HttpPost(nameof(ChangeStatus))]
+        public async Task<IActionResult> ChangeStatus(ChangeOrderStatusCommand command)
         {
             var result = await _mediator.Send(command);
             return CreateActionResultInstance(result);

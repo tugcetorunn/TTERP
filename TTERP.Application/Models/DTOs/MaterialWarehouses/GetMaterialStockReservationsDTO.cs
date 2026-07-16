@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TTERP.Domain.Entities;
 
-namespace TTERP.Application.Models.DTOs
+namespace TTERP.Application.Models.DTOs.MaterialWarehouses
 {
     public class GetMaterialStockReservationsDTO
     {

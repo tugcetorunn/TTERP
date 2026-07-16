@@ -5,16 +5,20 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TTERP.Application.CQRS.Announcements.Handlers;
+using TTERP.Application.Interfaces;
 using TTERP.Application.Mapster;
 using TTERP.Application.Validators;
 using TTERP.Domain.Entities;
 using TTERP.Persistence.Contexts;
+using TTERP.Persistence.ExchangeRates;
 using TTERP.Persistence.SeedData;
 using TTERP.WebApi.Extensions;
 using TTERP.WebApi.Hubs;
+using TTERP.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +41,31 @@ builder.Services.AddScoped<CurrencyExcelSeeder>();
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddValidatorsFromAssemblyContaining<CreateEmployeeCommandValidator>();
+
+// for exchange rates service injection;
+builder.Services.Configure<FinnhubOptions>(
+    builder.Configuration.GetSection(
+        FinnhubOptions.SectionName));
+
+builder.Services.AddSingleton<
+    IExchangeRateStore,
+    InMemoryExchangeRateStore>();
+
+builder.Services.AddSingleton<
+    IExchangeRatePublisher,
+    SignalRExchangeRatePublisher>();
+
+builder.Services.AddHostedService<
+    FinnhubExchangeRateWorker>();
+
+builder.Services.AddHttpClient("Finnhub", (serviceProvider, client) =>
+{
+    var options = serviceProvider
+        .GetRequiredService<IOptions<FinnhubOptions>>()
+        .Value;
+
+    client.BaseAddress = new Uri(options.RestBaseUrl);
+});
 
 // mapster ýn global konfigürasyonunu alýyoruz (eðer özel eþleþtirmeler yazarsak buraya eklenecek)
 var config = TypeAdapterConfig.GlobalSettings;
@@ -98,7 +127,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -124,6 +154,8 @@ app.MapControllers();
 app.MapHub<NotificationHub>("/notification-hub");
 
 app.UseCors("AllowReact");
+
+app.MapHub<ExchangeRateHub>("/hubs/exchange-rates");
 
 using (var scope = app.Services.CreateScope())
 {

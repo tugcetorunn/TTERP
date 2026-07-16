@@ -25,7 +25,8 @@ namespace TTERP.Application.CQRS.Invoices.Handlers
         {
             var invoices = await _invoiceRepository.GetListWithFilterAsync(
                 select: i => i.Adapt<GetInvoicesDTO>(),
-                where: i => i.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || i.IsActive == request.IsActive.Value));
+                where: i => i.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || i.IsActive == request.IsActive.Value) &&
+                (!request.OrderId.HasValue || i.OrderId == request.OrderId.Value));
 
             return Response<IReadOnlyList<GetInvoicesDTO>>.Success(invoices.ToList());
         }

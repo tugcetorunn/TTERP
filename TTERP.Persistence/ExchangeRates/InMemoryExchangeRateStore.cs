@@ -108,5 +108,51 @@ namespace TTERP.Persistence.ExchangeRates
                 ? (parts[0], parts[1])
                 : (cleanSymbol, string.Empty);
         }
+
+        public IReadOnlyCollection<ExchangeRateDTO> CalculateMissingRates(DateTimeOffset updatedAt)
+        {
+            var calculatedRates = new List<ExchangeRateDTO>();
+
+            var eurUsd = GetBySymbol("OANDA:EUR_USD");
+            var usdTry = GetBySymbol("OANDA:USD_TRY");
+            var eurTry = GetBySymbol("OANDA:EUR_TRY");
+
+            if (eurTry is null &&
+                eurUsd is not null &&
+                usdTry is not null)
+            {
+                calculatedRates.Add(
+                    AddOrUpdate(
+                        "OANDA:EUR_TRY",
+                        eurUsd.Price * usdTry.Price,
+                        updatedAt));
+            }
+
+            if (usdTry is null &&
+                eurTry is not null &&
+                eurUsd is not null &&
+                eurUsd.Price != 0)
+            {
+                calculatedRates.Add(
+                    AddOrUpdate(
+                        "OANDA:USD_TRY",
+                        eurTry.Price / eurUsd.Price,
+                        updatedAt));
+            }
+
+            if (eurUsd is null &&
+                eurTry is not null &&
+                usdTry is not null &&
+                usdTry.Price != 0)
+            {
+                calculatedRates.Add(
+                    AddOrUpdate(
+                        "OANDA:EUR_USD",
+                        eurTry.Price / usdTry.Price,
+                        updatedAt));
+            }
+
+            return calculatedRates;
+        }
     }
 }

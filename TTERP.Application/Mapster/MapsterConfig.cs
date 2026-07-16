@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TTERP.Application.CQRS.OrderItems.Commands;
 using TTERP.Application.CQRS.ParameterValues.Commands;
 using TTERP.Application.CQRS.ProductionItems.Commands;
 using TTERP.Application.Models.DTOs.MaterialWarehouses;
+using TTERP.Application.Models.DTOs.Orders;
 using TTERP.Application.Models.DTOs.ParameterValues;
 using TTERP.Application.Models.DTOs.ProductionItems;
 using TTERP.Application.Models.DTOs.ProductionProgresses;
@@ -186,6 +188,14 @@ namespace TTERP.Application.Mapster
                     src => src.Warehouse != null ? src.Warehouse.Name : null)
                 .Map(dest => dest.WarehouseCode,
                     src => src.Warehouse != null ? src.Warehouse.Code : null);
-                    }
+
+            TypeAdapterConfig<Order, GetOrdersDTO>
+                .NewConfig()
+                .Map(d => d.EmployeeName, s => s.Employee != null ? s.Employee.FullName : null);
+
+            TypeAdapterConfig<OrderItem, AddOrderItemCommand>
+                .NewConfig()
+                .Map(d => d.StockAllocations, s => s.OrderItemWarehouses != null ? s.OrderItemWarehouses : null);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace TTERP.Application.Interfaces
         IReadOnlyCollection<ExchangeRateDTO> GetAll();
         ExchangeRateDTO? GetBySymbol(string symbol);
         ExchangeRateDTO AddOrUpdate(string symbol, decimal price, DateTimeOffset updatedAt);
+        IReadOnlyCollection<ExchangeRateDTO> CalculateMissingRates(DateTimeOffset updatedAt);
     }
 }

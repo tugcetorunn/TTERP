@@ -21,6 +21,5 @@ namespace TTERP.Domain.Entities
         public int LanguageId { get; set; }
         public int ParameterDefinitionId { get; set; }
         public ParameterDefinition? ParameterDefinition { get; set; }
-
     }
 }

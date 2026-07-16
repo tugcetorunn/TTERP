@@ -13,8 +13,9 @@ namespace TTERP.Application.Models.DTOs.Invoices
         public string InvoiceNumber { get; set; }
         public int? OrderId { get; set; }
         public DateTime InvoiceDate { get; set; }
+        public int Currency { get; set; }
+        public string? CurrencyName { get; set; }
         public decimal TotalAmount { get; set; }
-        public decimal TotalAmountIncludingTax { get; set; }
         public decimal FinalAmount { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

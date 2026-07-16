@@ -11,7 +11,8 @@ namespace TTERP.Application.Models.DTOs.MaterialWarehouses
         public int MaterialId { get; set; }
         public string MaterialName { get; set; }
         public string MaterialCode { get; set; }
-        public string MaterialUnit { get; set; }
+        public int MaterialUnit { get; set; }
+        public string MaterialUnitName { get; set; }
         public int WarehouseId { get; set; }
         public string WarehouseName { get; set; }
         public string WarehouseCode { get; set; }

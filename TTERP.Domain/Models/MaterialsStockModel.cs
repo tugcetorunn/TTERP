@@ -11,7 +11,8 @@ namespace TTERP.Domain.Models
         public int MaterialId { get; set; }
         public string MaterialName { get; set; } = null!;
         public string MaterialCode { get; set; } = null!;
-        public string MaterialUnit { get; set; } = null!;
+        public int MaterialUnit { get; set; }
+        public string MaterialUnitName { get; set; } = null!;
         public int WarehouseId { get; set; }
         public string WarehouseName { get; set; } = null!;
         public string WarehouseCode { get; set; } = null!;

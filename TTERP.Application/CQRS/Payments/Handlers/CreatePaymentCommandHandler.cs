@@ -35,9 +35,14 @@ namespace TTERP.Application.CQRS.Payments.Handlers
                 return Response<int>.Fail(404, "Ödeme yapılmak istenen sipariş bulunamadı.");
             }
 
-            var payment = request.Adapt<Payment>();
+            if (request.Currency != order.Currency)
+            {
+                return Response<int>.Fail(
+                    400,
+                    "Ödeme para birimi sipariş para birimiyle aynı olmalıdır.");
+            }
 
-            await _paymentRepository.AddAsync(payment);
+            var payment = request.Adapt<Payment>();
 
             decimal totalPaidAmountBeforeThis = await _paymentRepository.GetTotalPaidAmountByOrderIdAsync(request.OrderId, cancellationToken);
 
@@ -49,12 +54,14 @@ namespace TTERP.Application.CQRS.Payments.Handlers
             }
             else if (totalPaidAmount == order.FinalAmount)
             {
-                order.PaymentStatus = await _parameterValueRepository.ParamValueToParamCode("OrderPaymentStatus", "Paid", cancellationToken); // Ödeme tamamlandı
+                order.PaymentStatus = await _parameterValueRepository.ParamValueToParamCode("PaymentStatus", "Paid", cancellationToken); // Ödeme tamamlandı
             }
             else
             {
-                order.PaymentStatus = await _parameterValueRepository.ParamValueToParamCode("OrderPaymentStatus", "PartiallyPaid", cancellationToken); // Kısmi ödeme yapıldı
+                order.PaymentStatus = await _parameterValueRepository.ParamValueToParamCode("PaymentStatus", "PartiallyPaid", cancellationToken); // Kısmi ödeme yapıldı
             }
+
+            await _paymentRepository.AddAsync(payment);
 
             _orderRepository.Update(order);
 

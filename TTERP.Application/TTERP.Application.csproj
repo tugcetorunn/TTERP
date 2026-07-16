@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Generators\**" />
+    <EmbeddedResource Remove="Generators\**" />
+    <None Remove="Generators\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="CQRS\Authentications\Commands\" />
+    <Folder Include="CQRS\ExchangeRates\Commands\" />
     <Folder Include="CQRS\ProductionProgresses\Queries\" />
     <Folder Include="CQRS\Towns\Commands\" />
     <Folder Include="CQRS\Districts\Commands\" />
@@ -18,7 +25,6 @@
     <Folder Include="CQRS\Cities\Commands\" />
     <Folder Include="CQRS\Countries\Commands\" />
     <Folder Include="CQRS\OrderItemWarehouses\Commands\" />
-    <Folder Include="Generators\" />
     <Folder Include="Models\DTOs\PostalCodes\" />
   </ItemGroup>
 

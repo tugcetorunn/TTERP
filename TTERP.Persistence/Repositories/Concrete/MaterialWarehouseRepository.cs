@@ -162,8 +162,7 @@ namespace TTERP.Persistence.Repositories.Concrete
 
         public async Task<List<MaterialsStockModel>> GetMaterialsStockAsync(int? materialId = null, int? warehouseId = null, CancellationToken cancellationToken = default)
         {
-            var query = context.MaterialWarehouses.AsNoTracking()
-                                                  .Where(x => !x.IsDeleted && x.IsActive);
+            var query = context.MaterialWarehouses.AsNoTracking().Where(x => !x.IsDeleted && x.IsActive);
 
             if (materialId.HasValue)
             {
@@ -175,71 +174,107 @@ namespace TTERP.Persistence.Repositories.Concrete
                 query = query.Where(x => x.WarehouseId == warehouseId.Value);
             }
 
-            var stocks = await query.GroupBy(x => new
-                              {
-                                  x.MaterialId,
-                                  MaterialName = x.Material!.Name,
-                                  MaterialCode = x.Material.Code,
-                                  MaterialUnit = x.Material.Unit,
-                              
-                                  x.WarehouseId,
-                                  WarehouseName = x.Warehouse!.Name,
-                                  WarehouseCode = x.Warehouse.Code
-                              })
-                              .Select(group => new MaterialsStockModel
-                              {
-                                  MaterialId = group.Key.MaterialId,
-                                  MaterialName = group.Key.MaterialName,
-                                  MaterialCode = group.Key.MaterialCode,
-                                  MaterialUnit = _parameterValueRepository.GetByParamTypeAndCodeAsync("MaterialUnit", (int)group.Key.MaterialUnit!, 1, cancellationToken).Result!.ParamValue,
-                              
-                                  WarehouseId = group.Key.WarehouseId,
-                                  WarehouseName = group.Key.WarehouseName,
-                                  WarehouseCode = group.Key.WarehouseCode,
-                              
-                                  TotalQuantity = group.Sum(x => x.Quantity),
-                              
-                                  IsActive = true,
-                                  IsDeleted = false
-                              })
-                              .OrderBy(x => x.MaterialName)
-                              .ThenBy(x => x.WarehouseName)
-                              .ToListAsync(cancellationToken);
+            var stocks = await query
+                .GroupBy(x => new
+                {
+                    x.MaterialId,
+                    MaterialName = x.Material!.Name,
+                    MaterialCode = x.Material.Code,
+                    MaterialUnit = x.Material.Unit,
 
-            var reservations = await context.MaterialStockReservations
-                                            .AsNoTracking()
-                                            .Where(x =>
-                                                !x.IsReleased &&
-                                                x.IsActive &&
-                                                !x.IsDeleted)
-                                            .GroupBy(x => new
-                                            {
-                                                x.MaterialId,
-                                                x.WarehouseId
-                                            })
-                                            .Select(group => new
-                                            {
-                                                group.Key.MaterialId,
-                                                group.Key.WarehouseId,
-                                                ReservedQuantity = group.Sum(x => x.ReservedQuantity - x.ConsumedQuantity > 0
-                                                                                                        ? x.ReservedQuantity - x.ConsumedQuantity
-                                                                                                        : 0)
-                                            })
-                                            .ToListAsync(cancellationToken);
+                    x.WarehouseId,
+                    WarehouseName = x.Warehouse!.Name,
+                    WarehouseCode = x.Warehouse.Code
+                })
+                .Select(group => new MaterialsStockModel
+                {
+                    MaterialId = group.Key.MaterialId,
+                    MaterialName = group.Key.MaterialName,
+                    MaterialCode = group.Key.MaterialCode,
+                    MaterialUnit = (int)group.Key.MaterialUnit!,
 
-                                                    var reservationDictionary = reservations.ToDictionary(
-                                                        x => (x.MaterialId, x.WarehouseId),
-                                                        x => x.ReservedQuantity);
+                    WarehouseId = group.Key.WarehouseId,
+                    WarehouseName = group.Key.WarehouseName,
+                    WarehouseCode = group.Key.WarehouseCode,
 
-                                                    foreach (var stock in stocks)
-                                                    {
-                                                        reservationDictionary.TryGetValue(
-                                                            (stock.MaterialId, stock.WarehouseId),
-                                                            out var reservedQuantity);
+                    TotalQuantity = group.Sum(x => x.Quantity),
 
-                                                        stock.ReservedQuantity = reservedQuantity;
-                                                        stock.AvailableQuantity =
-                                                            stock.TotalQuantity - reservedQuantity; }
+                    IsActive = true,
+                    IsDeleted = false
+                })
+                .OrderBy(x => x.MaterialName)
+                .ThenBy(x => x.WarehouseName)
+                .ToListAsync(cancellationToken);
+
+            var unitValues = await _parameterValueRepository
+                .GetParamValuesByParamTypeAsync(
+                    "MaterialUnit",
+                    1,
+                    cancellationToken);
+
+            var unitDictionary = unitValues
+                .Where(x => x != null)
+                .GroupBy(x => x!.ParamCode)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.First()!.ParamValue);
+
+            var reservationQuery = context.MaterialStockReservations
+                .AsNoTracking()
+                .Where(x =>
+                    !x.IsReleased &&
+                    x.IsActive &&
+                    !x.IsDeleted);
+
+            if (materialId.HasValue)
+            {
+                reservationQuery = reservationQuery.Where(
+                    x => x.MaterialId == materialId.Value);
+            }
+
+            if (warehouseId.HasValue)
+            {
+                reservationQuery = reservationQuery.Where(
+                    x => x.WarehouseId == warehouseId.Value);
+            }
+
+            var reservations = await reservationQuery
+                .GroupBy(x => new
+                {
+                    x.MaterialId,
+                    x.WarehouseId
+                })
+                .Select(group => new
+                {
+                    group.Key.MaterialId,
+                    group.Key.WarehouseId,
+
+                    ReservedQuantity = group.Sum(x =>
+                        x.ReservedQuantity - x.ConsumedQuantity > 0
+                            ? x.ReservedQuantity - x.ConsumedQuantity
+                            : 0)
+                })
+                .ToListAsync(cancellationToken);
+
+            var reservationDictionary = reservations.ToDictionary(
+                x => (x.MaterialId, x.WarehouseId),
+                x => x.ReservedQuantity);
+
+            foreach (var stock in stocks)
+            {
+                stock.MaterialUnitName =
+                    unitDictionary.GetValueOrDefault(stock.MaterialUnit)!;
+
+                reservationDictionary.TryGetValue(
+                    (stock.MaterialId, stock.WarehouseId),
+                    out var reservedQuantity);
+
+                stock.ReservedQuantity = Math.Max(0, reservedQuantity);
+
+                stock.AvailableQuantity =
+                    stock.TotalQuantity - stock.ReservedQuantity;
+            }
+
             return stocks;
         }
 

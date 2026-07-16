@@ -17,6 +17,7 @@ namespace TTERP.Domain.Entities
         public Employee? Employee { get; set; }
         public ICollection<Payment>? Payments { get; set; }
         public ICollection<Task>? Tasks { get; set; }
+        public ICollection<Invoice>? Invoices { get; set; }
         public int? OrderStatus { get; set; }
         public int? PaymentStatus { get; set; }
         public int? ShippingStatus { get; set; }

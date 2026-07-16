@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TTERP.Application.Models.DTOs.Supplies;
 
-namespace TTERP.Application.Workflows
+namespace TTERP.Application.Helpers
 {
     public static class WorkflowActionHelper
     {

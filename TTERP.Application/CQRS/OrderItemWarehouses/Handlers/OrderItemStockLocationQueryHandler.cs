@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace TTERP.Application.CQRS.OrderItemWarehouses.Handlers
             var orderItemStock = await _orderItemWarehouseRepository.GetListWithFilterAsync(
                 oi => oi.Adapt<OrderItemStockLocationDTO>(),
                 oi => oi.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || oi.IsActive == request.IsActive.Value)
-                && oi.OrderItemId == request.OrderItemId);
+                && oi.OrderItemId == request.OrderItemId,
+                include: oi => oi.Include(oi => oi.Warehouse)!);
 
             return Response<IReadOnlyList<OrderItemStockLocationDTO>>.Success(orderItemStock.ToList());
         }

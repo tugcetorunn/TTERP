@@ -9,13 +9,13 @@ using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.OrderItems.Commands
 {
-    public class CreateOrderItemCommand
+    public class AddOrderItemCommand : IRequest<Response<int>>
     {
+        public int OrderId { get; set; }
         public int ProductId { get; set; }
         public double Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
+        public decimal? UnitPrice { get; set; }
         public decimal Discount { get; set; }
-        // Hangi depodan ne kadar çekileceğinin listesi
         public List<OrderItemStockAllocationDTO> StockAllocations { get; set; } = new();
     }
 }

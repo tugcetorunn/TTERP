@@ -11,10 +11,12 @@ namespace TTERP.Application.CQRS.Invoices.Queries
 {
     public class GetInvoicesQuery : IRequest<Response<IReadOnlyList<GetInvoicesDTO>>>
     {
+        public int? OrderId { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
-        public GetInvoicesQuery(bool? isActive, bool? isDeleted)
+        public GetInvoicesQuery(int? orderId, bool? isActive, bool? isDeleted)
         {
+            OrderId = orderId;
             IsActive = isActive;
             IsDeleted = isDeleted;
         }

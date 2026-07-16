@@ -19,9 +19,18 @@ namespace TTERP.Persistence.Repositories.Concrete
 
         public async Task<Order?> GetOrderWithOrderItemsAsync(int? orderId, CancellationToken cancellationToken)
         {
-            return await context.Set<Order>()
-                                .Include(o => o.OrderItems)
-                                .FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted && o.IsActive, cancellationToken);
+            return await context.Orders
+                                .Include(order => order.Customer)
+                                .Include(order => order.Employee)
+                                .Include(order => order.OrderItems)!
+                                    .ThenInclude(item => item.Product)
+                                .Include(order => order.OrderItems)!
+                                    .ThenInclude(item => item.OrderItemWarehouses)!
+                                        .ThenInclude(allocation => allocation.Warehouse)
+                                .FirstOrDefaultAsync(
+                                    order => order.Id == orderId &&
+                                             order.IsActive &&
+                                             !order.IsDeleted, cancellationToken);
         }
     }
 }
