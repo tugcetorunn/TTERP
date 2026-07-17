@@ -17,7 +17,8 @@ namespace TTERP.Application.Models.DTOs.Materials
         public string? Description { get; set; }
         public int Unit { get; set; }
         public string? UnitName { get; set; }
-        public decimal CostPrice { get; set; }
+        public decimal? LastPurchasePrice { get; set; }
+        public decimal? AverageCost { get; set; }
         public decimal TaxRate { get; set; }
         public double StockQuantity { get; set; }
         public int SupplierCount { get; set; }

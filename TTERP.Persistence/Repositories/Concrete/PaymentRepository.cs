@@ -20,7 +20,7 @@ namespace TTERP.Persistence.Repositories.Concrete
         public async Task<decimal> GetTotalPaidAmountByOrderIdAsync(int orderId, CancellationToken cancellationToken)
         {
             return await context.Payments
-                .Where(p => p.OrderId == orderId && p.PaymentStatus == 1 && !p.IsDeleted)
+                .Where(p => p.OrderId == orderId && !p.IsDeleted)
                 .SumAsync(p => p.Amount, cancellationToken);
         }
     }

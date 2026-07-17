@@ -113,14 +113,10 @@ namespace TTERP.Application.CQRS.Orders.Handlers
 
             if (targetShortCode == "completed")
             {
-                var completionResult = await CompleteOrderAsync(
-                    order,
-                    cancellationToken);
-
-                if (!completionResult.IsSuccess)
-                {
-                    return completionResult;
-                }
+                return Response<int>.Fail(
+                    400,
+                    "Sipariş tamamlandı durumuna manuel olarak geçirilemez. " +
+                    "Kalan alacak sıfırlandığında sistem tarafından otomatik tamamlanır.");
             }
 
             order.OrderStatus = request.TargetStatusCode;
@@ -146,80 +142,6 @@ namespace TTERP.Application.CQRS.Orders.Handlers
                 order.Id,
                 200,
                 "Sipariş durumu başarıyla güncellendi.");
-        }
-
-        private async Task<Response<int>> CompleteOrderAsync(
-            Order order,
-            CancellationToken cancellationToken)
-        {
-            if (order.OrderItems == null ||
-                !order.OrderItems.Any())
-            {
-                return Response<int>.Fail(
-                    400,
-                    "Sipariş tamamlanabilmesi için en az bir sipariş kalemi bulunmalıdır.");
-            }
-
-            var productSaleReason = await _parameterValueRepository
-                .GetByShortCodeAsync(
-                    "ReasonForEntryOrExit",
-                    "URNSTS",
-                    1,
-                    cancellationToken);
-
-            if (productSaleReason == null)
-            {
-                return Response<int>.Fail(
-                    500,
-                    "Ürün satış stok hareket nedeni tanımlanmamış.");
-            }
-
-            foreach (var orderItem in order.OrderItems)
-            {
-                if (orderItem.Quantity <= 0)
-                {
-                    return Response<int>.Fail(
-                        400,
-                        $"Sipariş kalemi miktarı geçersiz. Kalem ID: {orderItem.Id}");
-                }
-
-                if (orderItem.OrderItemWarehouses == null ||
-                    !orderItem.OrderItemWarehouses.Any())
-                {
-                    return Response<int>.Fail(
-                        400,
-                        $"{orderItem.Product?.Name ?? $"Ürün #{orderItem.ProductId}"} için depo dağılımı bulunamadı.");
-                }
-
-                var allocatedQuantity = orderItem.OrderItemWarehouses.Sum(
-                    allocation => allocation.Quantity);
-
-                if (Math.Abs(allocatedQuantity - orderItem.Quantity) > 0.000001)
-                {
-                    return Response<int>.Fail(
-                        400,
-                        $"{orderItem.Product?.Name ?? $"Ürün #{orderItem.ProductId}"} için depo dağılımı sipariş miktarına eşit değildir.");
-                }
-
-                foreach (var allocation in orderItem.OrderItemWarehouses)
-                {
-                    if (allocation.Quantity <= 0)
-                    {
-                        return Response<int>.Fail(
-                            400,
-                            "Depodan karşılanacak ürün miktarı sıfırdan büyük olmalıdır.");
-                    }
-
-                    await _productWarehouseRepository.DecreaseStockAsync(
-                        warehouseId: allocation.WarehouseId,
-                        productId: orderItem.ProductId,
-                        quantity: allocation.Quantity,
-                        reason: productSaleReason.ParamCode,
-                        cancellationToken: cancellationToken);
-                }
-            }
-
-            return Response<int>.Success(order.Id, 200);
         }
     }
 }

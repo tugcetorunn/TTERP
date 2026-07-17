@@ -154,13 +154,7 @@ namespace TTERP.Application.CQRS.Orders.Handlers
 
                 orderCurrency ??= product.Currency;
 
-                var unitPrice =
-                    itemRequest.UnitPrice > 0
-                        ? itemRequest.UnitPrice
-                        : product.Price;
-
-                var grossAmount =
-                    unitPrice * (decimal)itemRequest.Quantity;
+                var grossAmount = product.Price * (decimal)itemRequest.Quantity;
 
                 if (itemRequest.Discount > grossAmount)
                 {
@@ -222,7 +216,7 @@ namespace TTERP.Application.CQRS.Orders.Handlers
                 {
                     ProductId = product.Id,
                     Quantity = itemRequest.Quantity,
-                    UnitPrice = unitPrice,
+                    UnitPrice = product.Price,
                     Discount = itemRequest.Discount,
                     TaxRate = product.TaxRate,
                     TotalPrice = totalPrice,

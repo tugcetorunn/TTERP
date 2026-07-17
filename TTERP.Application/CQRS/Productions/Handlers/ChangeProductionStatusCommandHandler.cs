@@ -229,10 +229,7 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                 "Üretim durumu başarıyla güncellendi.");
         }
 
-        private async Task<Response<int>> CompleteProductionAsync(
-    Production production,
-    ChangeProductionStatusCommand request,
-    CancellationToken cancellationToken)
+        private async Task<Response<int>> CompleteProductionAsync(Production production, ChangeProductionStatusCommand request, CancellationToken cancellationToken)
         {
             var actualQuantity = production.ActualQuantity ?? 0;
 
@@ -284,6 +281,8 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                     "Üretim stok hareket nedenleri tanımlanmamış.");
             }
 
+            decimal totalMaterialCost = 0m;
+
             foreach (var itemRequest in request.ProductionItems)
             {
                 var reservation = reservations.FirstOrDefault(reservation => reservation.ProductionItemId == itemRequest.ProductionItemId);
@@ -330,9 +329,24 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                     actualConsumption;
 
                 reservation.IsReleased = true;
-                reservation.ReleasedDate =
-                    DateTime.UtcNow;
+                reservation.ReleasedDate = DateTime.UtcNow;
+
+                // maliyet hesabı
+                var material = productionItem.Material;
+
+                if (material?.AverageCost == null)
+                {
+                    return Response<int>.Fail(
+                        400,
+                        $"{material?.Name ?? "Malzeme"} için maliyet bilgisi bulunamadı.");
+                }
+
+                totalMaterialCost += (decimal)actualConsumption * material.AverageCost.Value;
             }
+
+            var producedQuantity = request.ActualQuantity!.Value;
+
+            var unitProductionCost = totalMaterialCost / (decimal)producedQuantity;
 
             await _productWarehouseRepository.IncreaseStockAsync(
                 warehouseId: production.TargetWarehouseId,
@@ -340,6 +354,19 @@ namespace TTERP.Application.CQRS.Productions.Handlers
                 quantity: actualQuantity,
                 reason: productionOutputReason.ParamCode,
                 cancellationToken: cancellationToken);
+
+            // maliyeti bulurken ağırlıklı ortalama doğru hesaplanabilmesi için bu üretimdeki miktarı da hesaba katmak için increase stock metodundan sonra bu hesabı yapmak gerek;
+            var product = production.Product!;
+
+            var currentStock = (decimal)product.StockQuantity;
+
+            var currentAverageCost = product.CostPrice ?? 0m;
+
+            var incomingQuantity = (decimal)producedQuantity;
+
+            var newAverageCost = ( currentStock * currentAverageCost + incomingQuantity * unitProductionCost ) / (currentStock + incomingQuantity);
+
+            product.CostPrice = newAverageCost;
 
             return Response<int>.Success(production.Id, 200);
         }

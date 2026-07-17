@@ -10,7 +10,7 @@ namespace TTERP.Application.CQRS.Invoices.Commands
 {
     public class CreateInvoiceCommand : IRequest<Response<int>>
     {
-        public int? OrderId { get; set; }
+        public int OrderId { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int Currency { get; set; }
     }

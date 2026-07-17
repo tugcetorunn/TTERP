@@ -38,5 +38,12 @@ namespace TTERP.WebApi.Controllers
             var result = await _mediator.Send(command);
             return CreateActionResultInstance(result);
         }
+
+        [HttpPost(nameof(ChangeShippingStatus))]
+        public async Task<IActionResult> ChangeShippingStatus(ChangeOrderShippingStatusCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return CreateActionResultInstance(result);
+        }
     }
 }

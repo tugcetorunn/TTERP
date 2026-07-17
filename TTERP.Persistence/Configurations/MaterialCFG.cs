@@ -28,7 +28,12 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(5);
 
-            builder.Property(m => m.CostPrice)
+            builder.Property(m => m.AverageCost)
+                   .IsRequired(false)
+                   .HasColumnType("decimal(18,4)");
+
+            builder.Property(m => m.LastPurchasePrice)
+                   .IsRequired(false)
                    .HasColumnType("decimal(18,4)");
 
             builder.Property(m => m.TaxRate)

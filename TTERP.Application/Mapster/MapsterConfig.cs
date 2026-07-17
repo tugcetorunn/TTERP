@@ -8,6 +8,8 @@ using TTERP.Application.CQRS.OrderItems.Commands;
 using TTERP.Application.CQRS.ParameterValues.Commands;
 using TTERP.Application.CQRS.ProductionItems.Commands;
 using TTERP.Application.Models.DTOs.MaterialWarehouses;
+using TTERP.Application.Models.DTOs.OrderItems;
+using TTERP.Application.Models.DTOs.OrderItemWarehouses;
 using TTERP.Application.Models.DTOs.Orders;
 using TTERP.Application.Models.DTOs.ParameterValues;
 using TTERP.Application.Models.DTOs.ProductionItems;
@@ -193,6 +195,28 @@ namespace TTERP.Application.Mapster
                 .NewConfig()
                 .Map(d => d.EmployeeName, s => s.Employee != null ? s.Employee.FullName : null)
                 .Map(d => d.CustomerName, s => s.Customer != null ? s.Customer.CompanyName : null);
+
+            TypeAdapterConfig<OrderItem, GetOrderItemsDTO>
+                .NewConfig()
+                .Map(destination => destination.ProductName, source => source.Product != null
+                        ? source.Product.Name
+                        : null)
+                .Map(destination => destination.ProductCode, source => source.Product != null
+                        ? source.Product.Code
+                        : null)
+                .Map(destination => destination.StockLocations, source => source.OrderItemWarehouses);
+
+            TypeAdapterConfig<OrderItemWarehouse, OrderItemStockLocationDTO>
+                .NewConfig()
+                .Map(destination => destination.OrderItemId, source => source.OrderItemId)
+                .Map(destination => destination.WarehouseId, source => source.WarehouseId)
+                .Map(destination => destination.WarehouseName, source => source.Warehouse != null
+                        ? source.Warehouse.Name
+                        : null)
+                .Map(destination => destination.WarehouseCode, source => source.Warehouse != null
+                        ? source.Warehouse.Code
+                        : null)
+                .Map(destination => destination.Quantity, source => source.Quantity);
 
             TypeAdapterConfig<OrderItem, AddOrderItemCommand>
                 .NewConfig()

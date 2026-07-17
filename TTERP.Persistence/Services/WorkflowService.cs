@@ -90,6 +90,7 @@ namespace TTERP.Persistence.Services
                 1 => "SupplyStatus",
                 2 => "ProductionStatus",
                 3 => "OrderStatus",
+                7 => "ShippingStatus",
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(workflowType),
                     "Tanımsız workflow tipi.")

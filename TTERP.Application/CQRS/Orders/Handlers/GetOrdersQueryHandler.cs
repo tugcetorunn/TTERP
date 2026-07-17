@@ -40,7 +40,8 @@ namespace TTERP.Application.CQRS.Orders.Handlers
                                     .Include(order => order.OrderItems)!
                                         .ThenInclude(item => item.OrderItemWarehouses)!
                                             .ThenInclude(allocation => allocation.Warehouse)
-                                    .Include(order => order.Payments)!);
+                                    .Include(order => order.Payments)
+                                    .Include(order => order.Invoices)!);
 
             var statusValues = await _parameterValueRepository.GetParamValuesByParamTypeAsync(
                                 "OrderStatus",
@@ -95,6 +96,7 @@ namespace TTERP.Application.CQRS.Orders.Handlers
             foreach (var order in orders)
             {
                 order.OrderStatusName = statusDictionary.GetValueOrDefault(order.OrderStatus);
+                order.OrderStatusShortCode = statusShortCodeDictionary.GetValueOrDefault(order.OrderStatus);
                 order.PaymentStatusName = paymentDictionary.GetValueOrDefault(order.PaymentStatus);
                 order.ShippingStatusName = shippingDictionary.GetValueOrDefault(order.ShippingStatus);
                 order.CurrencyName = currencyDictionary.GetValueOrDefault(order.Currency);
@@ -104,10 +106,31 @@ namespace TTERP.Application.CQRS.Orders.Handlers
                     currentStatusCode: order.OrderStatus,
                     cancellationToken: cancellationToken);
 
+                order.AllowedShippingTransitions = await _workflowService.GetAllowedTransitionsAsync(
+                    workflowType: 7,
+                    currentStatusCode: order.ShippingStatus,
+                    cancellationToken: cancellationToken);
+
                 order.Actions = WorkflowActionHelper.CreateActions(
                     workflowType: 3,
                     statusShortCode: statusShortCodeDictionary.GetValueOrDefault(order.OrderStatus));
 
+                var normalizedOrderStatus = order.OrderStatusShortCode?.Trim().ToLowerInvariant();
+
+                var paidAmount = order.Payments?.Where(payment => payment.IsActive && !payment.IsDeleted)
+                                                .Sum(payment => payment.Amount) ?? 0m;
+
+                var remainingAmount = Math.Max(0m, order.FinalAmount - paidAmount);
+
+                var isApproved = normalizedOrderStatus == "approved";
+
+                var isCompleted = normalizedOrderStatus == "completed";
+
+                order.CanTakePayment = isApproved && remainingAmount > 0;
+
+                order.CanCreateInvoice = (isApproved || isCompleted) && paidAmount > 0;
+
+                order.CanChangeShipping = isApproved || isCompleted;
             }
 
             return Response<IReadOnlyList<GetOrdersDTO>>.Success(orders.ToList());

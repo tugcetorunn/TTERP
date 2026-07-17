@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TTERP.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using TTERP.Persistence.Contexts;
 namespace TTERP.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260716224615_editPriceAndCostPrice")]
+    partial class editPriceAndCostPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1219,15 +1222,6 @@ namespace TTERP.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("CanChangeShipping")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanCreateInvoice")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanTakePayment")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("ConversationId")
                         .HasColumnType("int");
 
@@ -1265,9 +1259,6 @@ namespace TTERP.Persistence.Migrations
                     b.Property<decimal>("FinalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("InvoicedAmount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1277,9 +1268,6 @@ namespace TTERP.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.Property<bool>("IsStockProcessed")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("LanguageSupportId")
                         .HasColumnType("int");
@@ -1292,24 +1280,15 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<decimal>("PaidAmount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("PaymentStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<decimal>("RemainingAmount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("ShippingStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
-
-                    b.Property<DateTime?>("StockProcessedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
@@ -1375,9 +1354,6 @@ namespace TTERP.Persistence.Migrations
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("OverrideUnitPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -2228,7 +2204,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 1,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1907),
+                            CreatedDate = new DateTime(2026, 7, 16, 22, 46, 14, 303, DateTimeKind.Utc).AddTicks(7426),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Admin",
@@ -2239,7 +2215,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 2,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1919),
+                            CreatedDate = new DateTime(2026, 7, 16, 22, 46, 14, 303, DateTimeKind.Utc).AddTicks(7432),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Manager",
@@ -2250,7 +2226,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 3,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1920),
+                            CreatedDate = new DateTime(2026, 7, 16, 22, 46, 14, 303, DateTimeKind.Utc).AddTicks(7434),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "User",
@@ -2261,7 +2237,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 4,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1921),
+                            CreatedDate = new DateTime(2026, 7, 16, 22, 46, 14, 303, DateTimeKind.Utc).AddTicks(7435),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Auditor",
@@ -3508,6 +3484,21 @@ namespace TTERP.Persistence.Migrations
                         },
                         new
                         {
+                            Id = 17,
+                            ActionCode = 5,
+                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatesStockMovement = true,
+                            DisplayOrder = 4,
+                            FromStatusCode = 3,
+                            IsActive = true,
+                            IsDeleted = false,
+                            LanguageSupportId = 1,
+                            RequiresConfirmation = true,
+                            ToStatusCode = 5,
+                            WorkflowType = 3
+                        },
+                        new
+                        {
                             Id = 18,
                             ActionCode = 6,
                             CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -3550,126 +3541,6 @@ namespace TTERP.Persistence.Migrations
                             RequiresConfirmation = true,
                             ToStatusCode = 6,
                             WorkflowType = 3
-                        },
-                        new
-                        {
-                            Id = 21,
-                            ActionCode = 2,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 1,
-                            FromStatusCode = 1,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = false,
-                            ToStatusCode = 2,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 22,
-                            ActionCode = 3,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 2,
-                            FromStatusCode = 2,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 3,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 23,
-                            ActionCode = 4,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 3,
-                            FromStatusCode = 3,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = false,
-                            ToStatusCode = 4,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 24,
-                            ActionCode = 5,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 5,
-                            FromStatusCode = 4,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 5,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 25,
-                            ActionCode = 6,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 6,
-                            FromStatusCode = 1,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 6,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 26,
-                            ActionCode = 6,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 7,
-                            FromStatusCode = 2,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 6,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 27,
-                            ActionCode = 6,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 8,
-                            FromStatusCode = 3,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 6,
-                            WorkflowType = 7
-                        },
-                        new
-                        {
-                            Id = 28,
-                            ActionCode = 6,
-                            CreatedDate = new DateTime(2026, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatesStockMovement = false,
-                            DisplayOrder = 9,
-                            FromStatusCode = 4,
-                            IsActive = true,
-                            IsDeleted = false,
-                            LanguageSupportId = 1,
-                            RequiresConfirmation = true,
-                            ToStatusCode = 6,
-                            WorkflowType = 7
                         });
                 });
 

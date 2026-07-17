@@ -27,6 +27,25 @@ namespace TTERP.Persistence.Repositories.Concrete
                                 .Include(order => order.OrderItems)!
                                     .ThenInclude(item => item.OrderItemWarehouses)!
                                         .ThenInclude(allocation => allocation.Warehouse)
+                                .Include(order => order.Payments)
+                                .Include(order => order.Invoices)
+                                .FirstOrDefaultAsync(
+                                    order => order.Id == orderId &&
+                                             order.IsActive &&
+                                             !order.IsDeleted, cancellationToken);
+        }
+
+        public async Task<Order?> GetOrderWithPaymentsAsync(int orderId, CancellationToken cancellationToken)
+        {
+            return await context.Orders
+                                .Include(order => order.Customer)
+                                .Include(order => order.Employee)
+                                .Include(order => order.OrderItems)!
+                                    .ThenInclude(item => item.Product)
+                                .Include(order => order.OrderItems)!
+                                    .ThenInclude(item => item.OrderItemWarehouses)!
+                                        .ThenInclude(allocation => allocation.Warehouse)
+                                .Include(order => order.Payments)
                                 .FirstOrDefaultAsync(
                                     order => order.Id == orderId &&
                                              order.IsActive &&

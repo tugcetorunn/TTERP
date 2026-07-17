@@ -17,6 +17,7 @@ namespace TTERP.Domain.Entities
         public double Quantity { get; set; }
         public int Currency { get; set; }
         public decimal UnitPrice { get; set; } // sipariş anındaki ürün fiyatı, ürün fiyatı değişebilir, siparişteki fiyatı saklamak için
+        public decimal? OverrideUnitPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal TaxRate { get; set; }
         public decimal TotalPrice { get; set; }

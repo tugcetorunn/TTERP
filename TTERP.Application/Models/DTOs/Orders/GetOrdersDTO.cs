@@ -17,7 +17,7 @@ namespace TTERP.Application.Models.DTOs.Orders
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public int CustomerId { get; set; }
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
         public int? EmployeeId { get; set; }
         public string? EmployeeName { get; set; }
         public int OrderStatus { get; set; }
@@ -34,7 +34,17 @@ namespace TTERP.Application.Models.DTOs.Orders
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal FinalAmount { get; set; }
+
+        public decimal PaidAmount { get; set; }
+        public decimal RemainingAmount { get; set; }
+        public decimal InvoicedAmount { get; set; }
+
+        public bool CanTakePayment { get; set; }
+        public bool CanCreateInvoice { get; set; }
+        public bool CanChangeShipping { get; set; }
+
         public ICollection<AllowedWorkflowTransitionDTO> AllowedTransitions { get; set; } = new List<AllowedWorkflowTransitionDTO>();
+        public ICollection<AllowedWorkflowTransitionDTO> AllowedShippingTransitions { get; set; } = new List<AllowedWorkflowTransitionDTO>();
         public WorkflowActionPermissionsDTO Actions { get; set; } = new();
         public ICollection<GetOrderItemsDTO> OrderItems { get; set; } = new List<GetOrderItemsDTO>();
         public ICollection<GetWorkflowHistoryDTO> WorkflowHistories { get; set; } = new List<GetWorkflowHistoryDTO>();

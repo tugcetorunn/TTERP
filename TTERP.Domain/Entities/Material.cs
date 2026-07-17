@@ -13,7 +13,8 @@ namespace TTERP.Domain.Entities
         public string Code { get; set; }
         public string? Description { get; set; }
         public int? Unit { get; set; }
-        public decimal CostPrice { get; set; } // son alınan fiyat, tedariklerde geçmişe dönük fiyat var.
+        public decimal? LastPurchasePrice { get; set; } // son alınan fiyat, tedariklerde geçmişe dönük fiyat var.
+        public decimal? AverageCost { get; set; }
         public decimal TaxRate { get; set; }
         public double StockQuantity { get; set; } = 0;
         public ICollection<SupplierMaterial>? SupplierMaterials { get; set; }

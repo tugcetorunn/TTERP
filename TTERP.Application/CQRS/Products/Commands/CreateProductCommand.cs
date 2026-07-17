@@ -15,7 +15,6 @@ namespace TTERP.Application.CQRS.Products.Commands
         public string? Description { get; set; }
         public int Currency { get; set; }
         public decimal Price { get; set; }
-        public decimal CostPrice { get; set; }
         public decimal TaxRate { get; set; }
         public int CategoryId { get; set; }
     }

@@ -19,15 +19,17 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
         private readonly IWorkflowService _workflowService;
         private readonly IParameterValueRepository _parameterValueRepository;
         private readonly IMaterialWarehouseRepository _materialWarehouseRepository;
+        private readonly IMaterialRepository _materialRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ChangeSupplyStatusCommandHandler(ISupplyRepository supplyRepository, IParameterValueRepository parameterValueRepository, IMaterialWarehouseRepository materialWarehouseRepository, IUnitOfWork unitOfWork, IWorkflowService workflowService)
+        public ChangeSupplyStatusCommandHandler(ISupplyRepository supplyRepository, IParameterValueRepository parameterValueRepository, IMaterialWarehouseRepository materialWarehouseRepository, IUnitOfWork unitOfWork, IWorkflowService workflowService, IMaterialRepository materialRepository)
         {
             _supplyRepository = supplyRepository;
             _parameterValueRepository = parameterValueRepository;
             _materialWarehouseRepository = materialWarehouseRepository;
             _unitOfWork = unitOfWork;
             _workflowService = workflowService;
+            _materialRepository = materialRepository;
         }
 
         public async Task<Response<int>> Handle(ChangeSupplyStatusCommand request, CancellationToken cancellationToken)
@@ -100,8 +102,37 @@ namespace TTERP.Application.CQRS.Supplies.Handlers
                         quantity: item.Quantity,
                         reason: entryReasonCode,
                         cancellationToken: cancellationToken);
-                }
 
+                    var material = await _materialRepository.FindAsync(item.MaterialId);
+
+                    if (material != null)
+                    {
+                        var currentStock = material.StockQuantity;
+                        var currentCost = material.AverageCost ?? 0m;
+
+                        var incomingQuantity = item.Quantity;
+                        var incomingUnitPrice = item.UnitPrice - (item.UnitPrice * item.DiscountRate / 100);
+
+                        var newTotalQuantity =
+                            currentStock + incomingQuantity;
+
+                        if (newTotalQuantity > 0)
+                        {
+                            material.AverageCost =
+                                (
+                                    (decimal)currentStock * currentCost +
+                                    (decimal)incomingQuantity *
+                                    incomingUnitPrice
+                                )
+                                /
+                                (decimal)newTotalQuantity;
+                        }
+
+                        material.LastPurchasePrice = item.UnitPrice - (item.UnitPrice * item.DiscountRate / 100);
+                        _materialRepository.Update(material);
+                    }
+                }
+               
                 supply.DeliveryDate = DateTime.UtcNow;
             }
 

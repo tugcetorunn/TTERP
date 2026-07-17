@@ -18,7 +18,7 @@ namespace TTERP.Application.Models.DTOs.Products
         public int Currency { get; set; }
         public string CurrencyName { get; set; }
         public decimal Price { get; set; }
-        public decimal CostPrice { get; set; }
+        public decimal? CostPrice { get; set; }
         public decimal TaxRate { get; set; }
         public double StockQuantity { get; set; }
         public int CategoryId { get; set; }

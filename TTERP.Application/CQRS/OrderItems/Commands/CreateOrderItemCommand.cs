@@ -13,7 +13,6 @@ namespace TTERP.Application.CQRS.OrderItems.Commands
     {
         public int ProductId { get; set; }
         public double Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
         // Hangi depodan ne kadar çekileceğinin listesi
         public List<OrderItemStockAllocationDTO> StockAllocations { get; set; } = new();

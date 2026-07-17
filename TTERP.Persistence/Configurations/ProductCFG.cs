@@ -26,7 +26,7 @@ namespace TTERP.Persistence.Configurations
                 .HasMaxLength(200);
 
             builder.Property(p => p.CostPrice)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType("decimal(18,4)");
 
             builder.Property(p => p.TaxRate)

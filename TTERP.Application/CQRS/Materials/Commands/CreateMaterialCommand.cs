@@ -14,7 +14,7 @@ namespace TTERP.Application.CQRS.Materials.Commands
         public string Code { get; set; }
         public string? Description { get; set; }
         public int Unit { get; set; }
-        public decimal CostPrice { get; set; }
+        //public decimal CostPrice { get; set; } // bunu kullanıcıdan almayacağız, son tedarikteki alış fiyatı buraya atanacak.
         public decimal TaxRate { get; set; }
         public double? StockQuantity { get; set; }
     }

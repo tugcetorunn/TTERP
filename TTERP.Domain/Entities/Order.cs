@@ -22,9 +22,17 @@ namespace TTERP.Domain.Entities
         public int? PaymentStatus { get; set; }
         public int? ShippingStatus { get; set; }
         public int Currency { get; set; }
+        public bool IsStockProcessed { get; set; }
+        public DateTime? StockProcessedDate { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal FinalAmount { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal RemainingAmount { get; set; }
+        public decimal InvoicedAmount { get; set; }
+        public bool CanTakePayment { get; set; }
+        public bool CanCreateInvoice { get; set; }
+        public bool CanChangeShipping { get; set; }
         public int? ConversationId { get; set; }
     }
 }

@@ -48,11 +48,24 @@ namespace TTERP.Persistence.Configurations
             CreateSeed(14, 3, 1, 2, false, false, 1, seedDate),
             CreateSeed(15, 3, 2, 3, true, false, 2, seedDate),
             CreateSeed(16, 3, 2, 4, true, false, 3, seedDate),
-            CreateSeed(17, 3, 3, 5, true, true, 4, seedDate),
             CreateSeed(18, 3, 1, 6, true, false, 5, seedDate),
             CreateSeed(19, 3, 2, 6, true, false, 6, seedDate),
             CreateSeed(20, 3, 3, 6, true, false, 7, seedDate)
-        );
+
+            );
+
+            //SHIPPING
+            builder.HasData(
+            CreateSeed(21, 7, 1, 2, false, false, 1, seedDate),
+            CreateSeed(22, 7, 2, 3, true, false, 2, seedDate),
+            CreateSeed(23, 7, 3, 4, false, false, 3, seedDate),
+            CreateSeed(24, 7, 4, 5, true, false, 5, seedDate),
+            CreateSeed(25, 7, 1, 6, true, false, 6, seedDate),
+            CreateSeed(26, 7, 2, 6, true, false, 7, seedDate),
+            CreateSeed(27, 7, 3, 6, true, false, 8, seedDate),
+            CreateSeed(28, 7, 4, 6, true, false, 9, seedDate)
+
+            );
         }
 
         private static object CreateSeed(
@@ -73,7 +86,7 @@ namespace TTERP.Persistence.Configurations
                 FromStatusCode = fromStatusCode,
                 ToStatusCode = toStatusCode,
 
-                // ActionCode aynı modülün hedef statü kodudur.
+                // ActionCode aynı modülün hedef statü kodudur
                 ActionCode = toStatusCode,
 
                 RequiredRole = requiredRole,
