@@ -45,7 +45,15 @@ namespace TTERP.Application.CQRS.Employees.Handlers
                 var validator = new CreateEmployeeCommandValidator();
                 var validResult = validator.Validate(request);
 
-                var validRoles = new[] { 2, 3 }; // "CALISAN", "TAKIM YONETICISI"
+                if (!validResult.IsValid)
+                {
+                    return Response<CreateEmployeeResultVM>.Fail(
+                        400,
+                        "Çalışan bilgileri geçersiz.",
+                        validResult.Errors.Select(x => x.ErrorMessage).ToArray());
+                }
+
+                var validRoles = new[] { 2, 3, 4 }; // "Yönetici", "Kullanıcı", "Denetçi"
 
                 if (!validRoles.Contains(request.RoleId))
                     return new Response<CreateEmployeeResultVM>
@@ -87,7 +95,7 @@ namespace TTERP.Application.CQRS.Employees.Handlers
                 }
 
                 var roleResult = await _userManager.AddToRoleAsync(employee, role.NormalizedName!);
-                if (roleResult.Succeeded)
+                if (!roleResult.Succeeded)
                 {
                     var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
                     return Response<CreateEmployeeResultVM>.Fail(400, "Rol atanırken hata oluştu.", errors);

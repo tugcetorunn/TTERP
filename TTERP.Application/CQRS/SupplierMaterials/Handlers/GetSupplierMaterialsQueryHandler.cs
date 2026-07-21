@@ -48,9 +48,22 @@ namespace TTERP.Application.CQRS.SupplierMaterials.Handlers
                                                group => group.Key,
                                                group => group.First()!.ParamValue);
 
+            var currencyValues = await _parameterValueRepository.GetParamValuesByParamTypeAsync(
+                                            "Currency",
+                                            1,
+                                            cancellationToken);
+
+            var currencyDictionary = currencyValues.Where(value => value != null)
+                                           .GroupBy(value => value!.ParamCode)
+                                           .ToDictionary(
+                                               group => group.Key,
+                                               group => group.First()!.ParamValue);
+
+
             foreach (var result in results)
             {
                 result.MaterialUnitName = unitDictionary.GetValueOrDefault(result.MaterialUnit)!;
+                result.CurrencyName = currencyDictionary.GetValueOrDefault(result.Currency)!;
             }
 
             return Response<IReadOnlyList<GetSupplierMaterialsDTO>>.Success(results.ToList());
