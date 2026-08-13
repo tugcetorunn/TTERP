@@ -18,6 +18,7 @@ using TTERP.Persistence.ExchangeRates;
 using TTERP.Persistence.SeedData;
 using TTERP.WebApi.Extensions;
 using TTERP.WebApi.Hubs;
+using TTERP.WebApi.Middlewares;
 using TTERP.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -141,9 +142,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
 await app.Services.SeedCurrencyValuesAsync();
+
+app.UseCors("AllowReact");
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -152,8 +157,6 @@ app.MapControllers();
 
 // Frontend bu adrese baðlanacak (Örn: localhost:5000/notification-hub)
 app.MapHub<NotificationHub>("/notification-hub");
-
-app.UseCors("AllowReact");
 
 app.MapHub<ExchangeRateHub>("/hubs/exchange-rates");
 

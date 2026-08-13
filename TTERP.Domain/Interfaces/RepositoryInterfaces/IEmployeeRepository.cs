@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTERP.Domain.Entities;
+using TTERP.Domain.Models;
 
 namespace TTERP.Domain.Interfaces
 {
@@ -14,5 +15,6 @@ namespace TTERP.Domain.Interfaces
         Task<int> GetMaxRegistrationNumberAsync(CancellationToken cancellationToken);
         Task<string?> GetMaxInternalPhoneAsync(CancellationToken cancellationToken);
         Task<bool> IsEmployeeInAnyTeamAsync(int memberId, CancellationToken cancellationToken);
+        Task<IReadOnlyList<GetEmployeesDTO>> GetEmployeesWithRoleAsync(bool? isActive, bool? isDeleted, CancellationToken cancellationToken = default);
     }
 }

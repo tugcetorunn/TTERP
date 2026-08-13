@@ -4,17 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TTERP.Application.Models.DTOs.Notifications;
 using TTERP.Domain.Entities;
 
-namespace TTERP.Application.Models.DTOs.Employees
+namespace TTERP.Domain.Models
 {
     public class GetEmployeesDTO
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? FullName { get; set; }
         public string NationalId { get; set; }
+        public int RegistrationNumber { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? InternalPhone { get; set; }
         public string? AddressLine { get; set; }
         public int? CountryId { get; set; }
         public string? CountryName { get; set; }
@@ -27,22 +31,22 @@ namespace TTERP.Application.Models.DTOs.Employees
         public int? NeighborhoodId { get; set; }
         public string? NeighborhoodName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int RegistrationNumber { get; set; } 
+        public DateTime HireDate { get; set; }
         public string? ImagePath { get; set; }
         public int? Gender { get; set; }
         public string? GenderName { get; set; }
         public int? MaritalStatus { get; set; }
         public string? MaritalStatusName { get; set; }
-        public DateTime HireDate { get; set; }
         public DateTime? LeavingDate { get; set; }
         public int? TitleId { get; set; } // filtre için
         public string? TitleName { get; set; } // listede göstermek için
         public int? TeamId { get; set; }
         public string? TeamName { get; set; }
+        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
         public decimal? Salary { get; set; }
         public double? RightToAnnualLeave { get; set; }
-        public string? InternalPhone { get; set; }
-        public ICollection<GetMyNotificationsDTO>? Notifications { get; set; }
+        public double AnnualLeaveUsed { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
     }

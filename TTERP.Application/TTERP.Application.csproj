@@ -15,6 +15,7 @@
   <ItemGroup>
     <Folder Include="CQRS\Authentications\Commands\" />
     <Folder Include="CQRS\ExchangeRates\Commands\" />
+    <Folder Include="CQRS\Permissions\Commands\" />
     <Folder Include="CQRS\ProductionProgresses\Queries\" />
     <Folder Include="CQRS\Towns\Commands\" />
     <Folder Include="CQRS\Districts\Commands\" />

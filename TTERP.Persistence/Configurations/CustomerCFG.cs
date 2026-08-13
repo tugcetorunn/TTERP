@@ -32,11 +32,20 @@ namespace TTERP.Persistence.Configurations
                    .IsRequired(false)
                    .HasMaxLength(300);
 
-            builder.HasIndex(x => x.TaxNumber)
-                   .IsUnique();
-
             builder.Property(x => x.TaxNumber)
-                   .IsRequired()
+                   .IsRequired(false)
+                   .HasMaxLength(10);
+
+            builder.HasIndex(x => x.TaxNumber)
+                .IsUnique()
+                .HasFilter("[TaxNumber] IS NOT NULL");
+
+            builder.HasIndex(x => x.NationalId)
+                .IsUnique()
+                .HasFilter("[NationalId] IS NOT NULL");
+
+            builder.Property(x => x.NationalId)
+                   .IsRequired(false)
                    .HasMaxLength(11);
 
             builder.Property(x => x.Email)

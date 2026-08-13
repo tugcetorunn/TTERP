@@ -29,6 +29,7 @@ namespace TTERP.WebApi.Extensions
             services.AddScoped<IParameterDefinitionRepository, ParameterDefinitionRepository>();
             services.AddScoped<IParameterValueRepository, ParameterValueRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductionRepository, ProductionRepository>();
@@ -36,6 +37,7 @@ namespace TTERP.WebApi.Extensions
             services.AddScoped<IProductionProgressRepository, ProductionProgressRepository>();
             services.AddScoped<IProductWarehouseRepository, ProductWarehouseRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<ISupplyRepository, SupplyRepository>();
             services.AddScoped<ISupplyItemRepository, SupplyItemRepository>();

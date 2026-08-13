@@ -11,6 +11,7 @@ namespace TTERP.Application.Models.DTOs.Titles
         public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+        public int EmployeeCount { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
     }

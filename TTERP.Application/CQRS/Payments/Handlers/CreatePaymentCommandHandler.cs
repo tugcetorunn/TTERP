@@ -289,8 +289,7 @@ namespace TTERP.Application.CQRS.Payments.Handlers
             }
 
             order.IsStockProcessed = true;
-            order.StockProcessedDate =
-                DateTime.UtcNow;
+            order.StockProcessedDate = DateTime.UtcNow;
 
             return Response<int>.Success(
                 order.Id,

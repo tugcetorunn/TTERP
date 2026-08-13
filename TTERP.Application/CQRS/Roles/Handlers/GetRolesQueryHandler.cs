@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TTERP.Application.CQRS.ProductWarehouses.Queries;
 using TTERP.Application.CQRS.Roles.Queries;
-using TTERP.Application.Models.DTOs.ProductWarehouses;
-using TTERP.Application.Models.DTOs.Roles;
 using TTERP.Domain.Interfaces;
+using TTERP.Domain.Models;
 using TTERP.Shared.Models;
 
 namespace TTERP.Application.CQRS.Roles.Handlers
@@ -25,9 +23,7 @@ namespace TTERP.Application.CQRS.Roles.Handlers
 
         public async Task<Response<IReadOnlyList<GetRolesDTO>>> Handle(GetRolesQuery request, CancellationToken cancellationToken)
         {
-            var roles = await _roleRepository.GetListWithFilterAsync(
-                r => r.Adapt<GetRolesDTO>(),
-                r => r.IsDeleted == (request.IsDeleted ?? false) && (!request.IsActive.HasValue || r.IsActive == request.IsActive.Value));
+            var roles = await _roleRepository.GetRolesWithCountsAsync(request.IsActive, request.IsDeleted, cancellationToken);
 
             return Response<IReadOnlyList<GetRolesDTO>>.Success(roles.ToList());
         }

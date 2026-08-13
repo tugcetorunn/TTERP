@@ -18,6 +18,10 @@ namespace TTERP.Persistence.Contexts
     public class AppDbContext : IdentityDbContext<Employee, Role, int>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        public AppDbContext()
+        {
+            
+        }
         public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -59,6 +63,8 @@ namespace TTERP.Persistence.Contexts
         public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
         public DbSet<ProductionProgress> ProductionProgresses { get; set; }
         public DbSet<MaterialStockReservation> MaterialStockReservations { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

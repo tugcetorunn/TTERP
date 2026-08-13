@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.InkML;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TTERP.Domain.Entities;
 using TTERP.Domain.Interfaces;
+using TTERP.Domain.Models;
 using TTERP.Persistence.Contexts;
 using TTERP.Persistence.Repositories.Abstract;
 
@@ -58,6 +60,104 @@ namespace TTERP.Persistence.Repositories.Concrete
         {
             return await context.Set<Employee>()
                           .AnyAsync(e => e.Id == memberId && e.TeamId.HasValue && !e.IsDeleted && e.IsActive, cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<GetEmployeesDTO>> GetEmployeesWithRoleAsync(bool? isActive, bool? isDeleted, CancellationToken cancellationToken = default)
+        {
+            var query = from employee in context.Users
+                        join userRole in context.UserRoles
+                        on employee.Id equals userRole.UserId
+                        into userRoleGroup from userRole in userRoleGroup
+                        .DefaultIfEmpty()
+                        join role in context.Roles
+                        on userRole.RoleId equals role.Id
+                        into roleGroup from role in roleGroup
+                        .DefaultIfEmpty()
+                        where employee.IsDeleted == (isDeleted ?? false) &&
+                        (
+                            !isActive.HasValue ||
+                            employee.IsActive ==
+                                isActive.Value
+                        )
+
+                        select new GetEmployeesDTO
+                        {
+                            Id = employee.Id,
+
+                            FirstName = employee.FirstName,
+                            LastName = employee.LastName,
+                            FullName = employee.FullName,
+
+                            NationalId = employee.NationalId,
+                            RegistrationNumber = employee.RegistrationNumber,
+
+                            Email = employee.Email,
+                            PhoneNumber = employee.PhoneNumber,
+                            InternalPhone = employee.InternalPhone,
+
+                            DateOfBirth = employee.DateOfBirth,
+                            HireDate = employee.HireDate,
+
+                            Gender = employee.Gender,
+                            MaritalStatus = employee.MaritalStatus,
+
+                            CountryId = employee.CountryId,
+                            CountryName = employee.Country != null
+                                    ? employee.Country!.Name
+                                    : null,
+
+                            CityId = employee.CityId,
+                            CityName = employee.City != null
+                                    ? employee.City!.Name
+                                    : null,
+
+                            TownId = employee.TownId,
+                            TownName = employee.Town != null
+                                    ? employee.Town!.Name
+                                    : null,
+
+                            DistrictId = employee.DistrictId,
+                            DistrictName = employee.District != null
+                                    ? employee.District!.Name
+                                    : null,
+
+                            NeighborhoodId = employee.NeighborhoodId,
+                            NeighborhoodName =  employee.Neighborhood != null
+                                    ? employee.Neighborhood!.Name
+                                    : null,
+
+                            AddressLine = employee.AddressLine,
+                            ImagePath = employee.ImagePath,
+
+                            TitleId = employee.TitleId,
+                            TitleName = employee.Title != null
+                                    ? employee.Title!.Name
+                                    : null,
+
+                            TeamId = employee.TeamId,
+                            TeamName = employee.Team != null
+                                    ? employee.Team!.Name
+                                    : null,
+
+                            RoleId = role != null
+                                ? role.Id
+                                : null,
+
+                            RoleName = role != null
+                                ? role.Name
+                                : null,
+
+                            Salary = employee.Salary,
+
+                            AnnualLeaveUsed = employee.AnnualLeaveUsed,
+
+                            RightToAnnualLeave = employee.RightToAnnualLeave!.Value,
+
+                            IsActive = employee.IsActive,
+                            IsDeleted = employee.IsDeleted
+                        };
+
+            return await query.AsNoTracking().ToListAsync(cancellationToken);
         }
     }
 }

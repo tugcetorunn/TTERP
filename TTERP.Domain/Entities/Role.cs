@@ -11,6 +11,7 @@ namespace TTERP.Domain.Entities
     public class Role : IdentityRole<int>, IAuditableEntity
     {
         public string NameForUI { get; set; }
+        public ICollection<RolePermission>? RolePermissions { get; set; } = new List<RolePermission>();
         public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;
         public DateTime? UpdatedDate { get; private set; }
         public DateTime? DeletedDate { get; private set; }

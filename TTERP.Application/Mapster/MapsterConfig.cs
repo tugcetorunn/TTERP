@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TTERP.Application.CQRS.OrderItems.Commands;
 using TTERP.Application.CQRS.ParameterValues.Commands;
 using TTERP.Application.CQRS.ProductionItems.Commands;
+using TTERP.Application.Models.DTOs.Customers;
 using TTERP.Application.Models.DTOs.MaterialWarehouses;
 using TTERP.Application.Models.DTOs.OrderItems;
 using TTERP.Application.Models.DTOs.OrderItemWarehouses;
@@ -19,6 +20,7 @@ using TTERP.Application.Models.DTOs.ProductWarehouses;
 using TTERP.Application.Models.DTOs.SupplierMaterials;
 using TTERP.Application.Models.DTOs.Supplies;
 using TTERP.Application.Models.DTOs.SupplyItems;
+using TTERP.Application.Models.DTOs.Titles;
 using TTERP.Application.Models.DTOs.WorkflowHistories;
 using TTERP.Domain.Entities;
 using TTERP.Domain.Models;
@@ -191,10 +193,14 @@ namespace TTERP.Application.Mapster
                 .Map(dest => dest.WarehouseCode,
                     src => src.Warehouse != null ? src.Warehouse.Code : null);
 
+            TypeAdapterConfig<Customer, GetCustomersDTO>
+                .NewConfig()
+                .Map(d => d.CompanyName, s => s.CompanyName != null ? s.CompanyName : s.FullName);
+
             TypeAdapterConfig<Order, GetOrdersDTO>
                 .NewConfig()
                 .Map(d => d.EmployeeName, s => s.Employee != null ? s.Employee.FullName : null)
-                .Map(d => d.CustomerName, s => s.Customer != null ? s.Customer.CompanyName : null);
+                .Map(d => d.CustomerName, s => s.Customer != null ? s.Customer.CompanyName : s.Customer!.FullName);
 
             TypeAdapterConfig<OrderItem, GetOrderItemsDTO>
                 .NewConfig()
@@ -221,6 +227,10 @@ namespace TTERP.Application.Mapster
             TypeAdapterConfig<OrderItem, AddOrderItemCommand>
                 .NewConfig()
                 .Map(d => d.StockAllocations, s => s.OrderItemWarehouses != null ? s.OrderItemWarehouses : null);
+
+            TypeAdapterConfig<Title, GetTitlesDTO>
+                .NewConfig()
+                .Map(d => d.EmployeeCount, s => s.Employees != null ? s.Employees.Count(employee => employee.IsActive && !employee.IsDeleted) : 0); // işe yaramadı. sql çözemiyor.
         }
     }
 }

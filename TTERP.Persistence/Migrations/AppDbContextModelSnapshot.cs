@@ -451,6 +451,10 @@ namespace TTERP.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("NationalId")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<int?>("NeighborhoodId")
                         .HasColumnType("int");
 
@@ -460,9 +464,8 @@ namespace TTERP.Persistence.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("TaxNumber")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<int?>("TownId")
                         .HasColumnType("int");
@@ -481,10 +484,15 @@ namespace TTERP.Persistence.Migrations
 
                     b.HasIndex("DistrictId");
 
+                    b.HasIndex("NationalId")
+                        .IsUnique()
+                        .HasFilter("[NationalId] IS NOT NULL");
+
                     b.HasIndex("NeighborhoodId");
 
                     b.HasIndex("TaxNumber")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[TaxNumber] IS NOT NULL");
 
                     b.HasIndex("TownId");
 
@@ -1720,6 +1728,80 @@ namespace TTERP.Persistence.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CreatedBy")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("TTERP.Domain.Entities.PostalCode", b =>
                 {
                     b.Property<int>("Id")
@@ -2228,7 +2310,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 1,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1907),
+                            CreatedDate = new DateTime(2026, 7, 23, 5, 30, 27, 156, DateTimeKind.Utc).AddTicks(5851),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Admin",
@@ -2239,7 +2321,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 2,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1919),
+                            CreatedDate = new DateTime(2026, 7, 23, 5, 30, 27, 156, DateTimeKind.Utc).AddTicks(5857),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Manager",
@@ -2250,7 +2332,7 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 3,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1920),
+                            CreatedDate = new DateTime(2026, 7, 23, 5, 30, 27, 156, DateTimeKind.Utc).AddTicks(5858),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "User",
@@ -2261,13 +2343,67 @@ namespace TTERP.Persistence.Migrations
                         {
                             Id = 4,
                             CreatedBy = 0,
-                            CreatedDate = new DateTime(2026, 7, 17, 2, 35, 8, 284, DateTimeKind.Utc).AddTicks(1921),
+                            CreatedDate = new DateTime(2026, 7, 23, 5, 30, 27, 156, DateTimeKind.Utc).AddTicks(5860),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Auditor",
                             NameForUI = "Denetçi",
                             NormalizedName = "AUDITOR"
                         });
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageSupportId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Supplier", b =>
@@ -4106,6 +4242,25 @@ namespace TTERP.Persistence.Migrations
                     b.Navigation("Production");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("TTERP.Domain.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TTERP.Domain.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("TTERP.Domain.Entities.Supplier", b =>
                 {
                     b.HasOne("TTERP.Domain.Entities.City", "City")
@@ -4429,6 +4584,11 @@ namespace TTERP.Persistence.Migrations
                     b.Navigation("ParameterValues");
                 });
 
+            modelBuilder.Entity("TTERP.Domain.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("TTERP.Domain.Entities.PostalCode", b =>
                 {
                     b.Navigation("Neighborhoods");
@@ -4457,6 +4617,11 @@ namespace TTERP.Persistence.Migrations
             modelBuilder.Entity("TTERP.Domain.Entities.ProductionItem", b =>
                 {
                     b.Navigation("MaterialStockReservations");
+                });
+
+            modelBuilder.Entity("TTERP.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("TTERP.Domain.Entities.Supplier", b =>

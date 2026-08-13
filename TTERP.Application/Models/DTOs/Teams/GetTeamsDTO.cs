@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TTERP.Application.Models.DTOs.Employees;
 using TTERP.Application.Models.DTOs.TeamManagers;
 using TTERP.Domain.Entities;
+using TTERP.Domain.Models;
 
 namespace TTERP.Application.Models.DTOs.Teams
 {

@@ -36,6 +36,7 @@ namespace TTERP.Persistence.SeedData
                     PhoneNumber = "5551112345",
                     RegistrationNumber = 10001,
                     HireDate = new DateTime(2015, 1, 1),
+                    RightToAnnualLeave = 0,
 
                     CountryId = 212,
                     CityId = 34,

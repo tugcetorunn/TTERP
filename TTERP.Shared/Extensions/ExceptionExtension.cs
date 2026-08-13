@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,13 @@ namespace TTERP.Shared.Extensions
     {
         public static Response<T> ToResponse<T>(this Exception ex, int statusCode = 500) where T : class
         {
+            var detailMessage = ex.GetBaseException().Message;
             var message = ex switch
             {
                 UnauthorizedAccessException => "Erişim yetkiniz yok",
                 ArgumentNullException => "Zorunlu alan eksik",
                 KeyNotFoundException => "Kayıt bulunamadı",
+                DbUpdateException => detailMessage,
                 _ => ex.Message ?? "Beklenmeyen bir hata oluştu"
             };
 
@@ -24,7 +27,7 @@ namespace TTERP.Shared.Extensions
                 StatusCode = statusCode,
                 IsSuccess = false,
                 Message = message,
-                Errors = new List<string> { ex.Message! },
+                Errors = new List<string> { detailMessage },
                 Data = default
             };
         }

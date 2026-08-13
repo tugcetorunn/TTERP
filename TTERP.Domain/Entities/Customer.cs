@@ -15,7 +15,8 @@ namespace TTERP.Domain.Entities
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
         public string? CompanyName { get; set; }
-        public string TaxNumber { get; set; } // kuruluş ise vkn, bireysel ise tckn
+        public string? NationalId { get; set; }
+        public string? TaxNumber { get; set; } // kuruluş ise vkn, bireysel ise tckn
         public int? CustomerType { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

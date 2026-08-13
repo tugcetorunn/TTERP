@@ -13,7 +13,8 @@ namespace TTERP.Application.Models.DTOs.Customers
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? CompanyName { get; set; }
-        public string TaxNumber { get; set; } // kuruluş ise vkn, bireysel ise tckn
+        public string? NationalId { get; set; }
+        public string? TaxNumber { get; set; } // kuruluş ise vkn, bireysel ise tckn
         public int? CustomerType { get; set; }
         public string? CustomerTypeName { get; set; }
         public string Email { get; set; }
